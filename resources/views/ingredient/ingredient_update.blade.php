@@ -29,7 +29,7 @@
                 </p>
 
                 {{-- 削除用の送信フォーム（今の食材のIDをセット） --}}
-                <form id="deleteForm" action="/ingredient_delete/{{ $ingredient->id }}" method="POST">
+                <form id="deleteForm" action="{{ url('/ingredient_delete/' . $ingredient->id) }}" method="POST">
                     @csrf
                     <div class="flex gap-4">
                         <button type="button" onclick="closeDeleteModal()"
@@ -78,20 +78,15 @@
                                 <select name="ingredient_cat_id" required
                                     class="w-full appearance-none bg-[#FAFAFA] border border-[#EAE4DD] rounded-md px-4 py-3 text-gray-800 font-medium focus:outline-none focus:border-[#C1A173] focus:ring-1 focus:ring-[#C1A173] transition-colors">
                                     <option value="" disabled>選択してください</option>
-                                    <option value="1" {{ $ingredient->ingredient_cat_id == 1 ? 'selected' : '' }}>野菜
-                                    </option>
-                                    <option value="2" {{ $ingredient->ingredient_cat_id == 2 ? 'selected' : '' }}>肉
-                                    </option>
-                                    <option value="3" {{ $ingredient->ingredient_cat_id == 3 ? 'selected' : '' }}>魚
-                                    </option>
-                                    <option value="4" {{ $ingredient->ingredient_cat_id == 4 ? 'selected' : '' }}>貝類
-                                    </option>
-                                    <option value="5" {{ $ingredient->ingredient_cat_id == 5 ? 'selected' : '' }}>麺類
-                                    </option>
-                                    <option value="6" {{ $ingredient->ingredient_cat_id == 6 ? 'selected' : '' }}>米
-                                    </option>
-                                    <option value="7" {{ $ingredient->ingredient_cat_id == 7 ? 'selected' : '' }}>その他
-                                    </option>
+
+                                    {{-- 登録されてるカテゴリーを選択状態にする --}}
+                                    @foreach ($categories as $category)
+                                        <option value="{{ $category->id }}"
+                                            {{ $ingredient->ingredient_cat_id == $category->id ? 'selected' : '' }}>
+                                            {{ $category->name }}
+                                        </option>
+                                    @endforeach
+
                                 </select>
                                 <div
                                     class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-gray-400">

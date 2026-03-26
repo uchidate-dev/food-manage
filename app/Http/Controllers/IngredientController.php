@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Ingredient;
+use App\Models\IngredientCategory;
 use Carbon\Carbon; // 日付の計算
 
 class IngredientController extends Controller
@@ -13,6 +14,7 @@ class IngredientController extends Controller
     {
         $this->middleware('auth');
     }
+
     // 食材一覧
     public function index(Request $request)
     {
@@ -48,21 +50,23 @@ class IngredientController extends Controller
             // デフォルト：賞味期限が近い順
             // 日付が空（NULL）のものは一番最後にする
             $query->orderByRaw('CASE WHEN expiration_date IS NULL THEN 1 ELSE 0 END')
-            ->orderBy('expiration_date', 'asc');
+                ->orderBy('expiration_date', 'asc');
         }
 
         // 条件を全てくっつけてデータを取得
         $ingredientsData = $query->get();
 
-        // アイコンの変換辞書
+        // ★アイコンの変換辞書（さっき増やしたカテゴリーに合わせて増強！！）
         $iconMap = [
             1 => '🥦', // 野菜
             2 => '🥩', // 肉
-            3 => '🐟', // 魚
-            4 => '🦪', // 貝類
-            5 => '🍜', // 麺類
-            6 => '🍚', // 米
-            7 => '🧺', // その他
+            3 => '🐟', // 魚介・水産加工品
+            4 => '🥚', // 卵・乳製品 (舞子さんファインプレー！)
+            5 => '🧈', // 大豆製品 (豆腐っぽいのがないのでバター等で代用)
+            6 => '🍜', // 麺類
+            7 => '🍚', // 米・粉類
+            8 => '❄️', // 冷凍食品
+            9 => '🧺', // その他
         ];
 
         // 表示用データ（アイコンや期限）を追加
@@ -122,7 +126,13 @@ class IngredientController extends Controller
     // 食材新規登録画面の表示
     public function create()
     {
-        return view('ingredient.ingredient_register');
+        // 1. DBから食材カテゴリーを全件持ってくる
+        $categories = IngredientCategory::all();
+
+        // 2. 画面（Blade）にカテゴリー一覧を渡す
+        return view('ingredient.ingredient_register', [
+            'categories' => $categories
+        ]);
     }
 
     // 食材新規登録の保存処理
@@ -183,9 +193,13 @@ class IngredientController extends Controller
             return redirect('/ingredient_list')->with('error', '不正なアクセスです。');
         }
 
+        //  DBから食材カテゴリーを全券持ってくる
+        $categories = IngredientCategory::all();
+
         // 編集画面にデータを渡して表示する
         return view('ingredient.ingredient_update', [
-            'ingredient' => $ingredient
+            'ingredient' => $ingredient,
+            'categories' => $categories
         ]);
     }
 

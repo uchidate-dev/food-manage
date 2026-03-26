@@ -12,10 +12,12 @@ class IngredientCategorySeeder extends Seeder
         $categories = [
             '野菜',
             '肉',
-            '魚',
-            '貝類',
+            '魚介・水産加工品',
+            '卵・乳製品',
+            '大豆製品',
             '麺類',
-            '米',
+            '米・粉類',
+            '冷凍食品',
             'その他',
         ];
 

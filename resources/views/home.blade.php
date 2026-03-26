@@ -1,198 +1,55 @@
 @extends('layouts.app')
 
-@section('css')
-<link rel="stylesheet" href="{{ asset('css/home.css') }}">
-@endsection
-
 @section('content')
-@php
-// 曜日
-$wk = ['日','月','火','水','木','金','土'];
+    <div style="max-width: 800px; margin: 0 auto; padding: 20px; font-family: sans-serif; color: #333;">
 
-// 上段ステータス
-$sc = $statusCounts ?? ['expired'=>0,'today'=>0,'within3'=>0,'unset'=>0,'freezer'=>0];
-$statusPills = [
-['key'=>'expired', 'icon'=>'⛔', 'label'=>'期限切れ', 'class'=>'nt-pill nt-pill--danger'],
-['key'=>'today', 'icon'=>'📅', 'label'=>'今日', 'class'=>'nt-pill nt-pill--today'],
-['key'=>'within3', 'icon'=>'⚠️', 'label'=>'3日以内', 'class'=>'nt-pill nt-pill--warn'],
-['key'=>'unset', 'icon'=>'❓', 'label'=>'期限未設定', 'class'=>'nt-pill nt-pill--mute'],
-['key'=>'freezer', 'icon'=>'❄️', 'label'=>'冷凍', 'class'=>'nt-pill nt-pill--ice'],
-];
+        <h1
+            style="font-size: 1.5rem; color: #555; border-bottom: 2px solid #ddd; padding-bottom: 10px; margin-bottom: 30px;">
+            Minimal Kitchen
+        </h1>
 
-// カレンダー列
-$calCols = [
-['key'=>'expired','label'=>'期限切れ','class'=>'h-expired','icon'=>'bi-emoji-dizzy-fill','risk'=>'expired'],
-['key'=>'today', 'label'=>'今日', 'class'=>'h-today', 'icon'=>'bi-emoji-tear-fill', 'risk'=>'soon'],
-['key'=>'d1', 'label'=>$d1->format('n/j').'（'.$wk[$d1->dayOfWeek].'）','class'=>'h-day','icon'=>'bi-emoji-tear-fill','risk'=>'soon'],
-['key'=>'d2', 'label'=>$d2->format('n/j').'（'.$wk[$d2->dayOfWeek].'）','class'=>'h-day','icon'=>'bi-emoji-tear-fill','risk'=>'soon'],
-['key'=>'d3', 'label'=>$d3->format('n/j').'（'.$wk[$d3->dayOfWeek].'）','class'=>'h-last','icon'=>'bi-emoji-smile-fill','risk'=>'safe'],
-];
+        {{-- 🔴 期限切れ（優先度MAX） --}}
+        @if (count($expiredItems) > 0)
+            <div
+                style="background-color: #fef2f2; border-left: 5px solid #ef4444; padding: 20px; margin-bottom: 30px; border-radius: 4px;">
+                <h2 style="color: #b91c1c; font-size: 1.2rem; margin-top: 0;">⚠️ 期限切れ食材（早く使おう！）</h2>
+                <ul style="color: #991b1b; padding-left: 20px;">
+                    @foreach ($expiredItems as $item)
+                        <li>{{ $item->name }} （{{ \Carbon\Carbon::parse($item->expiration_date)->format('m/d') }} 期限）</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
 
-// カレンダー中身
-$calItems = [
-'expired' => $expired->map(fn($ing)=> ['t'=>$ing->expire_label,'red'=>true])->all(),
-'today' => $calToday->map(fn($ing)=> ['t'=>$ing->name,'red'=>true])->all(),
-'d1' => $calD1->map(fn($ing)=> ['t'=>$ing->name,'red'=>false])->all(),
-'d2' => $calD2->map(fn($ing)=> ['t'=>$ing->name,'red'=>false])->all(),
-'d3' => $calD3->map(fn($ing)=> ['t'=>$ing->name,'red'=>false])->all(),
-];
-@endphp
+        {{-- 🟡 今日・明日期限（メインの救済対象） --}}
+        <div
+            style="background-color: #fffbeb; border-left: 5px solid #f59e0b; padding: 20px; margin-bottom: 30px; border-radius: 4px;">
+            <h2 style="color: #b45309; font-size: 1.2rem; margin-top: 0;"> 今日・明日で使い切りたい食材</h2>
 
-{{-- =========================
-  上段：ステータス
-========================= --}}
-<div class="nt-topbar">
-    <div class="nt-topbar-inner">
-        <div class="nt-status nt-status--tall">
-            @foreach($statusPills as $p)
-            <div class="{{ $p['class'] }}">
-                <div class="nt-pill-top">
-                    <span class="nt-pill-ico">{{ $p['icon'] }}</span>
-                    <span class="nt-pill-label">{{ $p['label'] }}</span>
+            @if (count($soonItems) > 0)
+                <ul style="color: #92400e; padding-left: 20px;">
+                    @foreach ($soonItems as $item)
+                        <li>{{ $item->name }} （{{ \Carbon\Carbon::parse($item->expiration_date)->format('m/d') }} 期限）</li>
+                    @endforeach
+                </ul>
+                <div style="margin-top: 20px;">
+                    <button
+                        style="background-color: #f59e0b; color: #fff; border: none; padding: 10px 20px; border-radius: 4px; cursor: pointer; font-weight: bold;">
+                        💡 この食材でAIに献立を相談する（※実装予定）
+                    </button>
                 </div>
-                <div class="nt-pill-bottom">
-                    <span class="nt-pill-num">{{ $sc[$p['key']] ?? 0 }}</span>
-                    <span class="nt-pill-unit">件</span>
-                </div>
-            </div>
-            @endforeach
-        </div>
-    </div>
-</div>
-
-<div class="nt-wrap">
-
-    {{-- =========================
-    中段：食材期限カレンダー（全幅） + 右上ボタン
-  ========================= --}}
-    <div class="nt-area nt-area--cal">
-        <div class="nt-block">
-
-            <div class="nt-block-head">
-                <div class="nt-title nt-title--bracket mb-0">食材期限カレンダー</div>
-
-               <a href="{{ url('/ingredient_list') }}" class="btn nt-btn-orange nt-btn-sm">食材一覧</a>
-            </div>
-
-            <table class="nt-table">
-                <thead>
-                    <tr>
-                        @foreach($calCols as $c)
-                        <th class="nt-head {{ $c['class'] }}">
-                            <span class="nt-head-inner">
-                                <span class="nt-ico nt-ico-{{ $c['risk'] }}">
-                                    <i class="bi {{ $c['icon'] }}"></i>
-                                </span>
-                                <span class="nt-label">{{ $c['label'] }}</span>
-                            </span>
-                        </th>
-                        @endforeach
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        @foreach($calCols as $c)
-                        <td>
-                            <div class="nt-items nt-scroll-5">
-                                @forelse(($calItems[$c['key']] ?? []) as $it)
-                                <div class="{{ !empty($it['red']) ? 'nt-red' : '' }}">
-                                    <span class="nt-cal-txt">{{ $it['t'] }}</span>
-                                </div>
-                                @empty
-                                @endforelse
-                            </div>
-                        </td>
-                        @endforeach
-                    </tr>
-                </tbody>
-            </table>
-
-        </div>
-    </div>
-
-    {{-- ===== 下段：レシピ3ブロック ===== --}}
-    <div class="nt-home-lower">
-
-        {{-- 最近見たレシピ --}}
-        <div class="nt-card">
-            <div class="nt-card-head">
-                <div class="nt-card-title">
-                    <i class="bi bi-eye-fill"></i>
-                    <span>最近見たレシピ</span>
-                </div>
-                <a href="{{ route('recipe.list') }}" class="nt-card-link">→ レシピ一覧へ</a>
-            </div>
-
-            <ul class="nt-card-list nt-card-list--scroll10">
-                @forelse($recentRecipes as $r)
-                <li class="nt-recipe-item">
-                    <span class="nt-star">★</span>
-                    <a class="nt-recipe-title" href="{{ route('recipe.detail', $r->id) }}">
-                        {{ $r->title }}
-                    </a>
-                </li>
-                @empty
-                <li class="nt-muted">まだ閲覧履歴がありません</li>
-                @endforelse
-            </ul>
-        </div>
-
-        {{-- お気に入りレシピ --}}
-        <div class="nt-card">
-            <div class="nt-card-head">
-                <div class="nt-card-title">
-                    <i class="bi bi-heart-fill"></i>
-                    <span>お気に入りレシピ</span>
-                </div>
-                <a href="{{ route('recipe.list') }}" class="nt-card-link">→ レシピ一覧へ</a>
-            </div>
-
-            <ul class="nt-card-list nt-card-list--scroll10">
-                @forelse($favoriteRecipes as $r)
-                <li class="nt-recipe-item">
-                    <span class="nt-heart">♥</span>
-                    <a class="nt-recipe-title" href="{{ route('recipe.detail', $r->id) }}">
-                        {{ $r->title }}
-                    </a>
-                </li>
-                @empty
-                <li class="nt-muted">お気に入りがありません</li>
-                @endforelse
-            </ul>
-        </div>
-
-        {{-- おすすめレシピ --}}
-        <div class="nt-card">
-            <div class="nt-card-head">
-                <div class="nt-card-title">
-                    <i class="bi bi-hand-thumbs-up-fill"></i>
-                    <span>おすすめレシピ</span>
-                </div>
-                <a href="{{ route('recipe.list') }}" class="nt-card-link">→ レシピ一覧へ</a>
-            </div>
-
-            @if(isset($recommendTags) && count($recommendTags) > 0)
-            <div class="nt-reco-kwbar">
-                食材：{{ implode('＋', $recommendTags->toArray()) }}
-            </div>
+            @else
+                <p style="color: #92400e; margin: 0;">現在、急いで使う食材はありません！✨</p>
             @endif
-
-            <ul class="nt-card-list nt-card-list--scroll10">
-                @forelse($recommendedRecipes as $r)
-                <li class="nt-recipe-item">
-                    <span class="nt-like">👍</span>
-                    <a class="nt-recipe-title" href="{{ route('recipe.detail', $r->id) }}">
-                        {{ $r->title }}
-                    </a>
-                </li>
-                @empty
-                <li class="nt-muted">おすすめが見つかりません</li>
-                @endforelse
-            </ul>
         </div>
 
-    </div> {{-- /.nt-home-lower --}}
+        {{-- 🔗 リンク集 --}}
+        <div style="margin-top: 40px;">
+            <a href="{{ url('/ingredient_list') }}"
+                style="display: inline-block; background-color: #4b5563; color: white; text-decoration: none; padding: 10px 20px; border-radius: 4px;">
+                冷蔵庫の中身を見る
+            </a>
+        </div>
 
-</div> {{-- /.nt-wrap --}}
-
+    </div>
 @endsection

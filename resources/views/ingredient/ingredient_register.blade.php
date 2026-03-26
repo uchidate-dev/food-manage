@@ -50,13 +50,12 @@
                                 <select name="ingredient_cat_id" required
                                     class="w-full appearance-none bg-[#FAFAFA] border border-[#EAE4DD] rounded-md px-4 py-3 text-gray-800 font-medium focus:outline-none focus:border-[#C1A173] focus:ring-1 focus:ring-[#C1A173] transition-colors">
                                     <option value="" disabled selected>選択してください</option>
-                                    <option value="1">野菜</option>
-                                    <option value="2">肉</option>
-                                    <option value="3">魚</option>
-                                    <option value="4">貝類</option>
-                                    <option value="5">麺類</option>
-                                    <option value="6">米</option>
-                                    <option value="7">その他</option>
+
+                                    {{-- Controllerから受け取ったカテゴリーを表示 --}}
+                                    @foreach ($categories as $category)
+                                        <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                    @endforeach
+
                                 </select>
                                 <div
                                     class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-gray-400">
