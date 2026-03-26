@@ -1,0 +1,9 @@
+.custom-thead th {
+            background-color: #8d6e63 !important;
+            color: white !important;
+            border: none;
+}
+
+body {
+            background-color: #f5f5dc !important;
+}

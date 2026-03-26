@@ -1,0 +1,12 @@
+/* ingredient_list.css [食材一覧画面] */
+
+.toast-enter {
+    opacity: 1 !important;
+    transform: translate(-50%, 0) !important;
+}
+
+.toast-leave {
+    opacity: 0 !important;
+    transform: translate(-50%, -20px) !important;
+    pointer-events: none;
+}

@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256">
+  <rect width="100%" height="100%" rx="40" fill="#f3f0e6"/>
+
+  <!-- なに -->
+  <text x="50%" y="110"
+        text-anchor="middle"
+        font-size="90"
+        font-family="Hiragino Maru Gothic ProN, Yu Gothic, sans-serif"
+        fill="#ff7a00">
+        なに
+  </text>
+
+  <!-- たべ -->
+  <text x="50%" y="200"
+        text-anchor="middle"
+        font-size="90"
+        font-family="Hiragino Maru Gothic ProN, Yu Gothic, sans-serif"
+        fill="#7b5b4a">
+        たべ
+  </text>
+
+</svg>

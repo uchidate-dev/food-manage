@@ -1,0 +1,63 @@
+.nt-notice-bg{
+  max-width: 640px;
+  margin: 70px auto 0;
+  padding-top: 60px;
+}
+
+.nt-notice-card{
+  border: 1px solid #eef0f8;
+  border-radius: 16px;
+  box-shadow: 0 18px 40px rgba(25,30,60,.10), 0 2px 10px rgba(25,30,60,.06);
+}
+.nt-notice-card .card-body{
+  padding: 20px 24px;
+}
+
+.nt-notice-title{
+  font-size: 20px;
+  line-height: 1.8;
+  margin-bottom: 12px;
+}
+
+.nt-notice-text{
+  margin: 0;
+  color: #222;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.8;
+}
+
+.nt-notice-link{
+  display: inline-block;
+  font-size: 16px;
+  font-weight: 700;
+  color: #6bb6ff;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  transition: color .12s ease, text-decoration-color .12s ease;
+  text-decoration-color: rgba(107,182,255,.8);
+}
+.nt-notice-link:hover{
+  opacity: .85;
+}
+a.nt-notice-link:hover,
+a.nt-notice-link:focus{
+  color: #1f7dff !important;
+  text-decoration-color: rgba(31,125,255,.95);
+}
+/* 右側：縦線＋中央寄せ */
+.nt-notice-right{
+  border-left: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 140px;
+}
+
+.nt-notice-one-line{ white-space: nowrap; }
+
+/* Bootstrap Icons のコーン */
+.nt-notice-icon{
+  font-size: 96px;   /* 80〜110で調整 */
+  color: #7fd1c7;    /* ミント */
+}

@@ -1,0 +1,137 @@
+/* 画面背景 */
+.nt-login-bg {
+  min-height: calc(100vh - 56px);
+  padding-top: 40px;
+  background: transparent;
+}
+
+/* カードを丸く＆影 */
+.nt-login-card {
+  max-width: 720px;   
+  border: 1px solid #eef0f8;
+  border-radius: 18px;
+  background: linear-gradient(180deg, #fff 0%, #ffffff 55%, #fbfbff 100%);
+  box-shadow:
+    0 18px 40px rgba(25, 30, 60, 0.10),
+    0 2px 10px rgba(25, 30, 60, 0.06);
+}
+/* フォーム全体を細くして左寄せにする（完成形寄せ） */
+.nt-login-form{
+  max-width: 560px;   
+  margin-left: 40px;  
+  margin: 0 auto;
+}
+.nt-login-form .form-label,
+.nt-login-form .form-check,
+.nt-login-form .btn,
+.nt-login-form .btn-link{
+  margin-left: 6px;   /* 0〜12pxで微調整 */
+}
+/* 最初の入力ブロックだけ上の余白を減らす */
+.nt-login-form > .mb-3:first-of-type{
+  margin-top: 0;
+}
+/* ログインタイトル */
+.nt-login-h2{
+   display: block;
+  text-align: center;
+  font-weight: 800;
+  font-size: 22px;
+  background: transparent;     
+  padding-top: 22px;           
+  padding-bottom: 14px;
+  margin: 0 0 4px;
+}
+
+/* タイトル */
+.nt-login-title {
+  font-weight: 800;
+}
+
+/* 入力欄を完成形っぽく：丸く、少し青い背景 */
+.nt-login-card .form-control{
+  background: #f3f6ff;    /* 淡い水色 */
+  border: 1px solid #dbe6ff;
+  border-radius: 18px;
+  padding: 14px 16px;
+  font-size: 16px;
+}
+
+/* フォーカス時の枠をオレンジ寄せ */
+.nt-login-card .form-control:focus{
+  border-color: #ff9a3c;
+  box-shadow: 0 0 0 .25rem rgba(255,154,60,.25);
+}
+
+/* チェックボックス周りを少し上げる */
+.nt-login-card .form-check{
+  margin-top: 6px;
+}
+
+/* ログインボタンを横幅いっぱいに */
+.nt-login-card {
+  font-size: 16px;      
+  font-weight: 700;
+  text-align: center;
+  width: 100%;
+  border-radius: 18px;
+  padding: 14px 16px;
+  font-weight: 700;
+}
+
+/* パスワードをお忘れですか？ */
+.nt-login-card .btn-link{
+  display: block;
+  text-align: center;
+  font-size: 16px;      
+  font-weight: 600;    
+  margin-top: 12px;
+  padding-left: 0;
+  
+}
+
+/* --- 仕上げ：完成形寄せ --- */
+
+/* カードの中身をゆったり */
+.nt-login-card .card-body{
+  padding: 28px 28px 24px;
+}
+
+/* ラベルの間隔 */
+.nt-login-card .form-label{
+  font-size: 16px; 
+  font-weight: 700;
+  margin-top: 6px;
+  margin-bottom: 8px;
+}
+/* ログイン状態を保持する文字の大きさ */
+.nt-login-card .form-check-label{
+  color: #333;
+  font-weight: 600; 
+  font-size: 16px;
+}
+/* チェックボックス周りの余白 */
+.nt-login-card .form-check{
+  margin-top: 10px;
+  margin-bottom: 18px;
+}
+/* チェックボックスの枠線を濃く */
+.nt-login-card .form-check-input{
+  border-color: #666;
+}
+
+/* チェック時の色（オレンジ寄せ） */
+.nt-login-card .form-check-input:checked{
+  background-color: #ff9a3c;
+  border-color: #ff9a3c;
+}
+
+/* フォーカス時のリング（薄いオレンジ） */
+.nt-login-card .form-check-input:focus{
+  box-shadow: 0 0 0 .25rem rgba(255,154,60,.25);
+}
+.nt-register-link{
+  font-weight: 700;
+  text-decoration: none;
+  font-size: 16px;
+}

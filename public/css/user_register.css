@@ -1,0 +1,14 @@
+body {
+    background-color: #F5F5DC !important;
+}
+
+.card-header {
+    background-color: #8D6E63 !important;
+    color: white !important;
+}
+
+.btn-main {
+    background-color: #E67E22 !important;
+    color: white !important;
+    border: none;
+}

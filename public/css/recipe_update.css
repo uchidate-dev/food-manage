@@ -1,0 +1,22 @@
+   body { background-color: #fff; }
+        .page-header {
+            background-color: #f5e6c8;
+            padding: 12px 0;
+            text-align: center;
+            position: relative;
+            margin-bottom: 24px;
+        }
+        .page-header .back-btn {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.2rem;
+            color: #333;
+            text-decoration: none;
+        }
+        .page-header h1 {
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin: 0;
+        }

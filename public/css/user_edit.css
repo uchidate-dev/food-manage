@@ -1,0 +1,14 @@
+body {
+    background: #F5F5DC;
+}
+
+.card-header {
+    background: #8D6E63;
+    color: white;
+}
+
+.btn-main {
+    background: #E67E22;
+    color: white;
+    border: none;
+}
