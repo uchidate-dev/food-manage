@@ -42,10 +42,9 @@
                                 class="hover:text-[#C1A173] transition-colors border-b-2 border-transparent hover:border-[#C1A173] pb-1">ホーム</a>
                             <a href="{{ url('/ingredient_list') }}"
                                 class="hover:text-[#C1A173] transition-colors border-b-2 border-transparent hover:border-[#C1A173] pb-1">食材管理</a>
-                            <a href="#"
-                                class="hover:text-[#C1A173] transition-colors border-b-2 border-transparent hover:border-[#C1A173] pb-1">レシピ</a>
+                            <a href="{{ url('/recipe_list') }}"
+                                class="hover:text-[#C1A173] transition-colors border-b-2 border-transparent hover:border-[#C1A173] pb-1">レシピ帳</a>
                         </div>
-
                         {{-- ログアウト --}}
                         <a href="{{ route('logout') }}"
                             class="text-[11px] font-bold tracking-widest text-[#8C7A6B] border border-[#EAE4DD] px-3 py-1.5 rounded hover:bg-[#FAF9F6] transition-all"

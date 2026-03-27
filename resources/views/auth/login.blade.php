@@ -1,77 +1,76 @@
 @extends('layouts.app')
 
-@section('css')
-<link rel="stylesheet" href="{{ asset('css/login.css') }}">
-@endsection
-
 @section('content')
-<div class="container nt-login-bg">
-    <div class="row justify-content-center">
-        <div class="col-md-5 col-lg-4">
-            <div class="card nt-login-card">
+    <div class="bg-[#FAF9F6] min-h-[85vh] flex flex-col items-center justify-center px-4 sm:px-6">
 
-                <h2 class="nt-login-h2">ログイン</h2>
-                <div class="card-body">
-                    <form method="POST" action="{{ route('login') }}" class="nt-login-form" novalidate>
-                        @csrf
+        <div class="w-full max-w-md bg-white rounded-3xl shadow-sm border border-[#EAE4DD] px-8 py-12 sm:px-12">
 
-                        {{-- メールアドレス（縦並び） --}}
-                        <div class="mb-3">
-                            <label for="email" class="form-label">メールアドレス</label>
-                            <input id="email" type="email"
-                                class="form-control @error('email') is-invalid @enderror"
-                                name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
+            {{--  アプリロゴ ＆ 歓迎メッセージ --}}
+            <div class="text-center mb-10">
+                <h1 class="text-3xl md:text-4xl font-logo font-bold text-[#8C7A6B] tracking-tight mb-2">
+                    My Kitchen <span class="text-[#C1A173]">Stock</span>
+                </h1>
+                <p class="text-[11px] font-bold tracking-[0.2em] text-[#C1A173] uppercase">
+                    Welcome back
+                </p>
+            </div>
 
-                            @error('email')
-                            <span class="invalid-feedback" role="alert">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                            @enderror
-                        </div>
+            <form method="POST" action="{{ route('login') }}" class="space-y-6" novalidate>
+                @csrf
 
-                        {{-- パスワード（縦並び） --}}
-                        <div class="mb-3">
-                            <label for="password" class="form-label">パスワード</label>
-                            <input id="password" type="password"
-                                class="form-control @error('password') is-invalid @enderror"
-                                name="password" required autocomplete="current-password">
+                {{-- メールアドレス --}}
+                <div>
+                    <label for="email" class="block text-[11px] font-bold text-gray-400 tracking-widest mb-2">
+                        <i class="bi bi-envelope mr-1 text-[#C1A173]"></i> メールアドレス
+                    </label>
+                    <input id="email" type="email" name="email" value="{{ old('email') }}" required autofocus
+                        class="w-full bg-[#FAF9F6] border border-[#EAE4DD] rounded-xl px-4 py-3.5 text-sm font-bold text-gray-700 focus:outline-none focus:border-[#C1A173] focus:ring-2 focus:ring-[#C1A173]/20 transition-all @error('email') border-red-300 bg-red-50 @enderror">
 
-                            @error('password')
-                            <span class="invalid-feedback" role="alert">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                            @enderror
-                        </div>
-
-                        {{-- ログイン保持（縦並び） --}}
-                        <div class="mb-3 form-check">
-                            <input class="form-check-input" type="checkbox" name="remember" id="remember"
-                                {{ old('remember') ? 'checked' : '' }}>
-                            <label class="form-check-label" for="remember">
-                                ログイン状態を保持する
-                            </label>
-                        </div>
-
-                        {{-- ボタン（横幅いっぱい推奨） --}}
-                        <button type="submit" class="btn nt-btn-orange w-100">
-                            ログイン
-                        </button>
-
-                        {{-- パスワード忘れリンク（ボタンの下） --}}
-                        @if (Route::has('password.request2'))
-                        <div class="mt-2">
-                            <a class="btn btn-link p-0" href="{{ route('password.request2') }}">
-                                パスワードをお忘れですか？
-                            </a>
-                        </div>
-                        @endif
-                    </form>
-                        <div class="mt-3 text-center">
-                            <a href="{{ route('user_register') }}">新規登録はこちら</a>
-                        </div>
+                    @error('email')
+                        <p class="text-red-400 text-[10px] mt-2 font-bold tracking-widest">{{ $message }}</p>
+                    @enderror
                 </div>
+
+                {{-- パスワード --}}
+                <div>
+                    <label for="password" class="block text-[11px] font-bold text-gray-400 tracking-widest mb-2">
+                        <i class="bi bi-lock mr-1 text-[#C1A173]"></i> パスワード
+                    </label>
+                    <input id="password" type="password" name="password" required
+                        class="w-full bg-[#FAF9F6] border border-[#EAE4DD] rounded-xl px-4 py-3.5 text-sm font-bold text-gray-700 focus:outline-none focus:border-[#C1A173] focus:ring-2 focus:ring-[#C1A173]/20 transition-all @error('password') border-red-300 bg-red-50 @enderror">
+
+                    @error('password')
+                        <p class="text-red-400 text-[10px] mt-2 font-bold tracking-widest">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                {{-- ログイン保持 --}}
+                <div class="flex items-center pt-2">
+                    <input type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}
+                        class="w-4 h-4 text-[#C1A173] bg-[#FAF9F6] border-[#EAE4DD] rounded focus:ring-[#C1A173] focus:ring-2 accent-[#C1A173] cursor-pointer">
+                    <label for="remember"
+                        class="ml-2 text-[11px] font-bold text-gray-400 tracking-widest cursor-pointer hover:text-gray-500 transition-colors">
+                        ログイン状態を保持する
+                    </label>
+                </div>
+
+                {{-- ログインボタン --}}
+                <div class="pt-4">
+                    <button type="submit"
+                        class="w-full bg-[#8C7A6B] py-4 rounded-xl text-xs font-bold text-white shadow-md shadow-[#8C7A6B]/20 hover:bg-[#7A695A] hover:-translate-y-0.5 transition-all tracking-[0.2em]">
+                        ログインする
+                    </button>
+                </div>
+            </form>
+
+            {{-- 新規登録への導線 --}}
+            <div class="mt-10 text-center border-t border-[#EAE4DD] pt-8">
+                <p class="text-[10px] font-bold text-gray-400 tracking-widest mb-3">アカウントをお持ちでない方</p>
+                <a href="{{ route('user_register') }}"
+                    class="inline-block border border-[#C1A173] text-[#C1A173] px-8 py-3 rounded-full text-[11px] font-bold hover:bg-[#FAF9F6] transition-all tracking-widest">
+                    新しく始める
+                </a>
             </div>
         </div>
     </div>
-</div>
 @endsection
