@@ -1,90 +1,11 @@
-.nt-header{
-  padding-top: 6px;
-  padding-bottom: 6px;
+body {
+    font-family: 'Noto Sans JP', sans-serif;
 }
 
-.nt-brand{
-  font-family: "UD デジタル 教科書体 NK-B", "UD デジタル 教科書体", "Hannotate SC", "Comic Sans MS", "Segoe Print", cursive;
-  font-weight: 900;
-  font-size: 40px;
-  color: #ff7a00 !important;
-  line-height: 1;
-}
-.nt-brand-font{
-  font-family: "UD デジタル 教科書体 NK-B", "UD デジタル 教科書体", "Segoe Print", "Comic Sans MS", cursive;
+.font-logo {
+    font-family: 'Quicksand', sans-serif;
 }
 
-.nt-header .nav-link{
-  font-weight: 700;
-}
-.nt-btn-orange-outline{
-  border: 1px solid #ff7a00 !important;
-  color: #ff7a00 !important;
-  background: transparent !important;
-}
-
-.nt-btn-orange-outline:hover{
-  background: #ff7a00 !important;
-  color: #fff !important;
-}
-
-.nt-header .btn{
-  padding: .25rem .5rem !important; 
-  font-size: .875rem !important;
-  line-height: 1.5 !important;
-  border-width: 1px !important;     
-  }
-.nt-btn-orange-outline:hover,
-.nt-btn-orange-outline:focus{
-  background: #ff7a00 !important;
-  color: #fff !important;
-  text-decoration: none !important;
-}
-.nt-btn-orange-outline,
-.nt-btn-orange-outline:visited{
-  border: 1px solid #ff7a00 !important;
-  color: #ff7a00 !important;
-  background: transparent !important;
-}
-
-.nt-btn-orange-outline:hover,
-.nt-btn-orange-outline:focus,
-.nt-btn-orange-outline:visited:hover,
-.nt-btn-orange-outline:visited:focus{
-  background: #ff7a00 !important;
-  color: #fff !important;
-  text-decoration: none !important;
-}
-/* ヘッダー内ボタンの見た目を統一 */
-.nt-header .btn{
-  border-radius: 8px !important;   /* 丸み：ここを好みで調整 */
-  font-weight: 700 !important;     /* 文字の太さを揃える */
-  letter-spacing: .02em;           /* いらなければ消してOK */
-}
-
-/* オレンジボタン */
-.nt-btn-orange {
-  background: #ff9a3c;
-  border: 1px solid #ff9a3c;
-  color: #fff;
-}
-.nt-btn-orange:hover {
-  filter: brightness(.98);
-}
-.nt-btn-orange:hover,
-.nt-btn-orange:focus{
-  background: #ff8c1a;     
-  border-color: #ff8c1a;
-  color: #fff;              
-  text-decoration: none;
-}
-
-.nt-btn-orange{
-  font-size: 16px;      
-  font-weight: 700;
-  text-align: center;
-  width: 100%;
-  border-radius: 18px;
-  padding: 14px 16px;
-  font-weight: 700;
+.nav-link-spacing {
+    letter-spacing: 0.1em;
 }

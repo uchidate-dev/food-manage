@@ -167,7 +167,8 @@ class IngredientController extends Controller
     }
 
     // 食材の論理削除（delete_flgを1にする処理）
-    public function destroy($id)
+    // ★ Requestを受け取れるように (Request $request, $id) に変更
+    public function destroy(\Illuminate\Http\Request $request, $id)
     {
         // ログインしているユーザーの食材を探す
         $ingredient = Ingredient::where('user_id', auth()->id())->find($id);
@@ -176,6 +177,11 @@ class IngredientController extends Controller
         if ($ingredient) {
             $ingredient->delete_flg = 1;
             $ingredient->save();
+        }
+
+        // もし「Ajax（裏側からの通信）」でお願いされたら、画面移動させずに「成功したよ！」って返事だけする
+        if ($request->ajax()) {
+            return response()->json(['success' => true, 'message' => '食材を削除しました。']);
         }
 
         // 一覧画面に戻って、トースト通知を出す

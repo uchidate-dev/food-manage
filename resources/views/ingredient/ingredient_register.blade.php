@@ -7,7 +7,7 @@
 
 @section('content')
     <div
-        class="bg-[#FAFAFA] font-sans text-gray-800 flex flex-col items-center justify-center min-h-screen p-6 relative w-full">
+        class="bg-[#FAF9F6] font-sans text-[#4A4A4A] flex flex-col items-center justify-center min-h-screen py-12 px-4 sm:px-6 relative w-full">
 
         {{-- 登録成功時のトースト通知 --}}
         @if (session('success'))
@@ -15,116 +15,137 @@
                 class="fixed top-8 left-1/2 transform -translate-x-1/2 -translate-y-5 opacity-0 z-50 transition-all duration-200 ease-out flex flex-col gap-4">
                 <div
                     class="flex items-center bg-white border-l-4 border-[#C1A173] rounded shadow-lg px-8 py-4 min-w-[320px]">
+                    <i class="bi bi-check-circle-fill text-[#C1A173] text-lg mr-3"></i>
                     <p class="text-sm font-bold text-gray-700 tracking-widest">{{ session('success') }}</p>
                 </div>
             </div>
         @endif
 
-        <div class="w-full max-w-2xl mt-8">
+        <div class="w-full max-w-xl">
 
-            {{-- 一覧へ戻るボタン --}}
+            {{-- 一覧へ戻るリンク --}}
             <a href="/ingredient_list"
-                class="mb-4 inline-flex items-center text-sm font-bold text-gray-400 hover:text-[#8C7A6B] transition-colors tracking-widest">
-                <span class="mr-2">←</span> 一覧へ戻る
+                class="mb-6 inline-flex items-center text-[11px] font-bold text-gray-400 hover:text-[#C1A173] transition-colors tracking-widest uppercase">
+                <i class="bi bi-arrow-left mr-2"></i> 一覧に戻る
             </a>
 
-            <div class="bg-white rounded-lg shadow-xl border border-gray-100 overflow-hidden">
-                <div class="bg-[#FCFBFA] px-10 py-8 border-b border-gray-100">
-                    <p class="mb-1 text-xs font-bold tracking-widest text-[#C1A173] uppercase">Add New Ingredient</p>
-                    <h2 class="text-2xl font-bold text-gray-800"
-                        style="font-family: ui-serif, Georgia, Cambria, 'Times New Roman', Times, serif;">
-                        食材の登録
+            <div class="bg-white rounded-2xl shadow-sm border border-[#EAE4DD] overflow-hidden">
+
+                {{-- タイトルエリア --}}
+                <div class="bg-[#FCFBFA] px-8 py-8 border-b border-[#EAE4DD] text-center">
+                    <h2 class="text-2xl font-logo font-bold text-[#8C7A6B] tracking-tight mb-1">
+                        Kitchen Stock
                     </h2>
+                    <p class="text-[11px] font-bold tracking-[0.2em] text-[#C1A173]">新しい食材を登録</p>
                 </div>
 
-                <div class="px-10 py-8">
+                <div class="px-8 py-10">
                     {{-- データの送信先(action)を設定＆Enterで入力できるのを止める --}}
-                    <form action="/ingredients" method="POST" class="space-y-6" onkeydown="return event.key != 'Enter';">
+                    <form action="/ingredients" method="POST" class="space-y-8" onkeydown="return event.key != 'Enter';">
                         @csrf
 
+                        {{-- カテゴリー --}}
                         <div>
-                            <label class="block text-xs font-bold text-gray-500 tracking-widest mb-2 flex items-center">
-                                カテゴリー <span class="text-red-400 ml-1">*</span>
+                            <label class="block text-[11px] font-bold text-gray-400 tracking-widest mb-2 flex items-center">
+                                <i class="bi bi-tag mr-2 text-[#C1A173]"></i>カテゴリー <span class="text-red-400 ml-1">*</span>
                             </label>
                             <div class="relative">
                                 <select name="ingredient_cat_id" required
-                                    class="w-full appearance-none bg-[#FAFAFA] border border-[#EAE4DD] rounded-md px-4 py-3 text-gray-800 font-medium focus:outline-none focus:border-[#C1A173] focus:ring-1 focus:ring-[#C1A173] transition-colors">
+                                    class="w-full appearance-none bg-[#FAF9F6] border border-[#EAE4DD] rounded-xl px-4 py-3.5 text-sm font-bold text-gray-700 focus:outline-none focus:border-[#C1A173] focus:ring-2 focus:ring-[#C1A173]/20 transition-all cursor-pointer">
                                     <option value="" disabled selected>選択してください</option>
-
-                                    {{-- Controllerから受け取ったカテゴリーを表示 --}}
                                     @foreach ($categories as $category)
                                         <option value="{{ $category->id }}">{{ $category->name }}</option>
                                     @endforeach
-
                                 </select>
                                 <div
-                                    class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-gray-400">
-                                    ▼</div>
+                                    class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-[#C1A173]">
+                                    <i class="bi bi-chevron-down text-xs"></i>
+                                </div>
                             </div>
                         </div>
 
+                        {{-- 食材名 --}}
                         <div>
-                            <label class="block text-xs font-bold text-gray-500 tracking-widest mb-2">
-                                食材名 <span class="text-red-400 ml-1">*</span></label>
+                            <label class="block text-[11px] font-bold text-gray-400 tracking-widest mb-2 flex items-center">
+                                <i class="bi bi-pencil mr-2 text-[#C1A173]"></i>食材名 <span class="text-red-400 ml-1">*</span>
+                            </label>
                             <input type="text" name="name" required maxlength="100" placeholder="例：キャベツ、豚バラ肉"
-                                class="w-full bg-[#FAFAFA] border border-[#EAE4DD] rounded-md px-4 py-3 text-gray-800 font-medium placeholder-gray-300 focus:outline-none focus:border-[#C1A173] focus:ring-1 focus:ring-[#C1A173] transition-colors">
+                                class="w-full bg-[#FAF9F6] border border-[#EAE4DD] rounded-xl px-4 py-3.5 text-sm font-bold text-gray-700 placeholder-gray-300 focus:outline-none focus:border-[#C1A173] focus:ring-2 focus:ring-[#C1A173]/20 transition-all">
                         </div>
 
+                        {{-- 保管場所 --}}
                         <div>
-                            <label class="block text-xs font-bold text-gray-500 tracking-widest mb-2">保管場所 <span
-                                    class="text-red-400 ml-1">*</span></label>
+                            <label class="block text-[11px] font-bold text-gray-400 tracking-widest mb-2 flex items-center">
+                                <i class="bi bi-box-seam mr-2 text-[#C1A173]"></i>保管場所 <span
+                                    class="text-red-400 ml-1">*</span>
+                            </label>
                             <div class="flex gap-4">
                                 <label class="flex-1 cursor-pointer">
                                     <input type="radio" name="storage_type" value="0" class="peer hidden" checked>
                                     <div
-                                        class="text-center bg-white border border-[#EAE4DD] rounded-md px-4 py-3 font-bold text-gray-400 peer-checked:border-[#8C7A6B] peer-checked:text-[#8C7A6B] peer-checked:bg-[#FAF8F5] transition-all shadow-sm">
-                                        冷蔵庫</div>
+                                        class="text-center bg-white border border-[#EAE4DD] rounded-xl px-4 py-3.5 text-xs font-bold text-gray-400 peer-checked:border-blue-300 peer-checked:text-blue-500 peer-checked:bg-blue-50/50 transition-all shadow-sm">
+                                        <i class="bi bi-snow mr-1"></i> 冷蔵
+                                    </div>
                                 </label>
                                 <label class="flex-1 cursor-pointer">
                                     <input type="radio" name="storage_type" value="1" class="peer hidden">
                                     <div
-                                        class="text-center bg-white border border-[#EAE4DD] rounded-md px-4 py-3 font-bold text-gray-400 peer-checked:border-[#8C7A6B] peer-checked:text-[#8C7A6B] peer-checked:bg-[#FAF8F5] transition-all shadow-sm">
-                                        冷凍庫
+                                        class="text-center bg-white border border-[#EAE4DD] rounded-xl px-4 py-3.5 text-xs font-bold text-gray-400 peer-checked:border-cyan-300 peer-checked:text-cyan-600 peer-checked:bg-cyan-50/50 transition-all shadow-sm">
+                                        <i class="bi bi-thermometer-snow mr-1"></i> 冷凍
                                     </div>
                                 </label>
                             </div>
                         </div>
 
+                        {{-- 数量 ＆ 賞味期限 --}}
                         <div class="flex gap-6">
                             <div class="w-1/3">
-                                <label class="block text-xs font-bold text-gray-500 tracking-widest mb-2">数量 <span
-                                        class="text-red-400 ml-1">*</span></label>
+                                <label
+                                    class="block text-[11px] font-bold text-gray-400 tracking-widest mb-2 flex items-center">
+                                    <i class="bi bi-123 mr-2 text-[#C1A173]"></i>数量 <span class="text-red-400 ml-1">*</span>
+                                </label>
                                 <input type="number" name="quantity" min="0" required placeholder="例：1"
-                                    class="w-full bg-[#FAFAFA] border border-[#EAE4DD] rounded-md px-4 py-3 text-gray-800 font-medium placeholder-gray-300 focus:outline-none focus:border-[#C1A173] focus:ring-1 focus:ring-[#C1A173] transition-colors">
+                                    class="w-full bg-[#FAF9F6] border border-[#EAE4DD] rounded-xl px-4 py-3.5 text-sm font-bold text-gray-700 placeholder-gray-300 focus:outline-none focus:border-[#C1A173] focus:ring-2 focus:ring-[#C1A173]/20 transition-all text-center">
                             </div>
 
                             <div class="w-2/3">
-                                <label class="block text-xs font-bold text-gray-500 tracking-widest mb-2">賞味期限</label>
+                                <label
+                                    class="block text-[11px] font-bold text-gray-400 tracking-widest mb-2 flex items-center">
+                                    <i class="bi bi-calendar-event mr-2 text-[#C1A173]"></i>賞味期限
+                                </label>
                                 <input type="date" name="expiration_date"
-                                    class="w-full bg-[#FAFAFA] border border-[#EAE4DD] rounded-md px-4 py-3 text-gray-800 font-medium focus:outline-none focus:border-[#C1A173] focus:ring-1 focus:ring-[#C1A173] transition-colors">
+                                    class="w-full bg-[#FAF9F6] border border-[#EAE4DD] rounded-xl px-4 py-3.5 text-sm font-bold text-gray-700 focus:outline-none focus:border-[#C1A173] focus:ring-2 focus:ring-[#C1A173]/20 transition-all">
                             </div>
                         </div>
 
+                        {{-- メモ --}}
                         <div>
-                            <label class="block text-xs font-bold text-gray-500 tracking-widest mb-2">メモ・詳細</label>
+                            <label class="block text-[11px] font-bold text-gray-400 tracking-widest mb-2 flex items-center">
+                                <i class="bi bi-journal-text mr-2 text-[#C1A173]"></i>メモ・詳細
+                            </label>
                             <textarea name="memo" rows="3" maxlength="255" placeholder="単位(g,パック)や、使い道の予定など..."
-                                class="w-full bg-[#FAFAFA] border border-[#EAE4DD] rounded-md px-4 py-3 text-gray-800 font-medium placeholder-gray-300 focus:outline-none focus:border-[#C1A173] focus:ring-1 focus:ring-[#C1A173] transition-colors resize-none"></textarea>
+                                class="w-full bg-[#FAF9F6] border border-[#EAE4DD] rounded-xl px-4 py-3.5 text-sm font-medium text-gray-700 placeholder-gray-300 focus:outline-none focus:border-[#C1A173] focus:ring-2 focus:ring-[#C1A173]/20 transition-all resize-none"></textarea>
                         </div>
 
-                        <div class="mt-10 flex items-center justify-end">
+                        {{-- ボタンエリア --}}
+                        <div
+                            class="mt-12 flex flex-col sm:flex-row items-center justify-end gap-3 pt-4 border-t border-gray-50">
                             {{-- キャンセルボタン（一覧へ戻る） --}}
                             <button type="button" onclick="location.href='/ingredient_list'"
-                                class="px-4 py-3 text-sm font-bold text-gray-400 hover:text-gray-600 mr-auto transition-colors tracking-widest">
+                                class="w-full sm:w-auto px-6 py-3.5 text-xs font-bold text-gray-400 hover:text-gray-600 transition-colors tracking-widest sm:mr-auto">
                                 キャンセル
                             </button>
 
                             {{-- 送信ボタン1（続けて登録） --}}
                             <button type="submit" name="action" value="continue"
-                                class="border border-[#C1A173] text-[#C1A173] bg-white px-6 py-3 rounded-md text-sm font-bold hover:bg-[#FCFBFA] transition-all tracking-widest">続けて登録する</button>
+                                class="w-full sm:w-auto border-2 border-[#C1A173] text-[#C1A173] bg-white px-6 py-3 rounded-xl text-xs font-bold hover:bg-[#FAF9F6] transition-all tracking-widest">
+                                続けて登録する
+                            </button>
 
                             {{-- 送信ボタン2（登録して一覧へ） --}}
                             <button type="submit" name="action" value="return"
-                                class="bg-[#8C7A6B] px-6 py-3 rounded-md text-sm font-bold text-white shadow-md hover:bg-[#7A695A] transition-all tracking-widest ml-3">登録して一覧へ
+                                class="w-full sm:w-auto bg-[#8C7A6B] px-8 py-3.5 rounded-xl text-xs font-bold text-white shadow-md shadow-[#8C7A6B]/30 hover:bg-[#7A695A] hover:-translate-y-0.5 transition-all tracking-widest">
+                                <i class="bi bi-check2 mr-1"></i> 登録して一覧へ
                             </button>
                         </div>
                     </form>
