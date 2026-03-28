@@ -31,10 +31,10 @@
 
                 {{-- AI機能への導線ボタン --}}
                 <div class="flex items-center gap-3">
-                    <button type="button"
+                    <a href="{{ route('recipe.suggest') }}"
                         class="inline-flex items-center rounded-xl bg-[#C1A173] px-6 py-3 text-xs font-bold text-white shadow-md shadow-[#C1A173]/20 transition-all hover:bg-[#A88C61] hover:-translate-y-0.5 tracking-widest whitespace-nowrap group">
                         <i class="bi bi-stars mr-2 group-hover:rotate-12 transition-transform"></i> 新しい献立をAIに提案してもらう
-                    </button>
+                    </a>
                 </div>
             </div>
 
