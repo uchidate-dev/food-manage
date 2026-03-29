@@ -11,15 +11,13 @@
 
         {{-- 登録成功時のトースト通知 --}}
         @if (session('success'))
-            <div id="toast"
-                class="fixed top-8 left-1/2 transform -translate-x-1/2 -translate-y-5 opacity-0 z-50 transition-all duration-200 ease-out flex flex-col gap-4">
-                <div
-                    class="flex items-center bg-white border-l-4 border-[#C1A173] rounded shadow-lg px-8 py-4 min-w-[320px]">
-                    <i class="bi bi-check-circle-fill text-[#C1A173] text-lg mr-3"></i>
-                    <p class="text-sm font-bold text-gray-700 tracking-widest">{{ session('success') }}</p>
-                </div>
+            <div id="flash-message"
+                class="fixed top-24 left-1/2 transform -translate-x-1/2 z-50 bg-[#C1A173] text-white px-8 py-3.5 rounded-full shadow-lg shadow-[#C1A173]/30 font-bold text-xs tracking-widest flex items-center transition-opacity duration-500">
+                <i class="bi bi-check-circle-fill mr-2 text-lg"></i>
+                {{ session('success') }}
             </div>
         @endif
+
 
         <div class="w-full max-w-xl">
 
@@ -153,9 +151,4 @@
             </div>
         </div>
     </div>
-@endsection
-
-{{-- JSの読み込み --}}
-@section('js')
-    <script src="{{ asset('js/ingredient_register.js') }}"></script>
 @endsection

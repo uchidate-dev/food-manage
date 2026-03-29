@@ -2,6 +2,15 @@
 
 @section('content')
 
+    {{-- 🪄 大成功のポップアップ通知（トースト）本体だけ残す！ --}}
+    @if (session('success'))
+        <div id="flash-message"
+            class="fixed top-24 left-1/2 transform -translate-x-1/2 z-50 bg-[#C1A173] text-white px-8 py-3.5 rounded-full shadow-lg shadow-[#C1A173]/30 font-bold text-xs tracking-widest flex items-center transition-opacity duration-500">
+            <i class="bi bi-check-circle-fill mr-2 text-lg"></i>
+            {{ session('success') }}
+        </div>
+    @endif
+
     @php
         // ユーザーごとのお気に入りID一覧（N+1回避）
         $favoriteIds = [];
@@ -19,7 +28,7 @@
                     {{-- Dashboardへ戻るリンク --}}
                     <a href="/home"
                         class="mb-3 inline-flex items-center text-[11px] font-bold text-gray-400 hover:text-[#C1A173] transition-colors tracking-widest uppercase">
-                        <i class="bi bi-arrow-left mr-2"></i> ← ホームに戻る
+                        <i class="bi bi-arrow-left mr-2"></i> ホームに戻る
                     </a>
                     <h1 class="text-3xl font-logo font-bold text-[#8C7A6B] tracking-tight">
                         My Recipe Book
@@ -31,17 +40,17 @@
 
                 {{-- AI機能への導線ボタン --}}
                 <div class="flex items-center gap-3">
-                    <a href="{{ route('recipe.suggest') }}"
+                    <a href="/recipe/suggest" onclick="showLoading()"
                         class="inline-flex items-center rounded-xl bg-[#C1A173] px-6 py-3 text-xs font-bold text-white shadow-md shadow-[#C1A173]/20 transition-all hover:bg-[#A88C61] hover:-translate-y-0.5 tracking-widest whitespace-nowrap group">
                         <i class="bi bi-stars mr-2 group-hover:rotate-12 transition-transform"></i> 新しい献立をAIに提案してもらう
                     </a>
                 </div>
             </div>
 
-            {{--  メインコンテンツエリア --}}
+            {{-- メインコンテンツエリア --}}
             <div class="grid grid-cols-12 gap-8">
 
-                {{--  左サイドバー：フィルタ＆検索 --}}
+                {{-- 左サイドバー：フィルタ＆検索 --}}
                 <aside class="col-span-12 lg:col-span-3 space-y-6">
 
                     {{-- 絞り込みカード --}}
@@ -130,7 +139,7 @@
                     </div>
                 </aside>
 
-                {{--  右メインエリア：レシピ一覧 --}}
+                {{-- 右メインエリア：レシピ一覧 --}}
                 <main class="col-span-12 lg:col-span-9">
                     <div class="rounded-2xl border border-[#EAE4DD] bg-white shadow-sm overflow-hidden">
 
@@ -171,18 +180,27 @@
                                         </a>
                                     </div>
 
-                                    {{-- アクションボタン --}}
-                                    <div class="flex items-center justify-end w-full sm:w-auto gap-4 shrink-0">
-                                        {{-- お気に入りボタン（JavaScriptで動く） --}}
+                                    {{-- アクションボタン（お気に入り・削除・詳細） --}}
+                                    <div class="flex items-center justify-end w-full sm:w-auto gap-3 shrink-0">
+
+                                        {{-- お気に入りボタン --}}
                                         <button type="button"
-                                            class="favorite-btn text-xl transition-transform hover:scale-110 {{ $isFavorited ? 'text-red-400' : 'text-gray-300' }}"
+                                            class="favorite-btn text-xl transition-transform hover:scale-110 mr-1 {{ $isFavorited ? 'text-red-400' : 'text-gray-300' }}"
                                             data-id="{{ $recipe->id }}">
                                             <i class="bi {{ $isFavorited ? 'bi-heart-fill' : 'bi-heart' }}"></i>
                                         </button>
 
+                                        {{-- 削除ボタン（ゴミ箱） --}}
+                                        <button type="button"
+                                            onclick="openSharedDeleteModal('{{ route('recipe.destroy', $recipe->id) }}', '{{ $recipe->title }}')"
+                                            class="w-10 h-10 rounded-full bg-[#FAF9F6] flex items-center justify-center text-gray-400 hover:bg-red-50 hover:text-red-400 shadow-sm transition-all"
+                                            title="削除する">
+                                            <i class="bi bi-trash3 text-sm"></i>
+                                        </button>
+
                                         {{-- 詳細ボタン --}}
                                         <a href="{{ route('recipe.detail', ['id' => $recipe->id, 'back' => url()->full()]) }}"
-                                            class="w-10 h-10 rounded-full bg-[#FAF9F6] flex items-center justify-center text-gray-400 group-hover:bg-[#C1A173] group-hover:text-white shadow-sm transition-all"
+                                            class="w-10 h-10 rounded-full bg-[#FAF9F6] flex items-center justify-center text-gray-400 hover:bg-[#C1A173] hover:text-white shadow-sm transition-all"
                                             title="詳細を見る">
                                             <i class="bi bi-chevron-right text-sm"></i>
                                         </a>
@@ -202,9 +220,18 @@
 
             </div>
         </div>
+
+        {{-- 共通パーツ：ロボット --}}
+        @include('components.loading-robot')
+
+        {{-- 共通パーツ：削除モーダルのHTML --}}
+        @include('components.delete-modal')
     </div>
 @endsection
 
 @section('js')
+    {{-- ★ここで外部ファイルをキレイにまとめて読み --}}
     <script src="{{ asset('js/recipe_favorite.js') }}"></script>
+    <script src="{{ asset('js/flash_message.js') }}"></script>
+    <script src="{{ asset('js/shared_components.js') }}"></script>
 @endsection

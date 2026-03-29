@@ -1,163 +1,191 @@
 @extends('layouts.app')
 
 @section('content')
+    <div class="bg-[#FAF9F6] text-[#4A4A4A] min-h-screen py-8 px-4 sm:px-6 pb-24 relative overflow-hidden">
 
-    @php
-        $backUrl = session('recipes_back_url', url()->previous());
-        $isFavorited = false;
-        if (auth()->check()) {
-            $isFavorited = auth()->user()->favoriteRecipes()->where('recipes.id', $recipe->id)->exists();
-        }
-    @endphp
-
-    <div class="bg-[#FAF9F6] text-[#4A4A4A] min-h-screen py-8 px-4 sm:px-6 pb-24">
+        {{-- 背景装飾 --}}
+        <div
+            class="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-gradient-to-br from-[#C1A173]/10 to-transparent rounded-full blur-3xl -z-10">
+        </div>
+        <div
+            class="absolute bottom-[-10%] right-[-10%] w-[30%] h-[30%] bg-gradient-to-tl from-[#8C7A6B]/10 to-transparent rounded-full blur-3xl -z-10">
+        </div>
 
         <div class="max-w-4xl mx-auto">
 
-            {{-- 上部ナビゲーション（戻る ＆ アクション） --}}
-            <div class="flex items-center justify-between mb-6">
-                <a href="{{ $backUrl }}"
-                    class="inline-flex items-center text-[11px] font-bold text-gray-400 hover:text-[#C1A173] transition-colors tracking-widest uppercase">
-                    <i class="bi bi-arrow-left mr-2 text-lg"></i> 一覧に戻る
+            {{-- 上部ナビゲーション＆メッセージ --}}
+            <div class="flex justify-between items-center mb-8">
+                <a href="/recipe_list"
+                    class="text-[11px] font-bold text-gray-400 hover:text-[#C1A173] tracking-widest transition-colors flex items-center">
+                    <i class="bi bi-chevron-left mr-1"></i> レシピ一覧へ戻る
                 </a>
 
-                <div class="flex items-center gap-4">
-                    {{-- お気に入りボタン --}}
-                    <button type="button"
-                        class="favorite-btn text-2xl transition-transform hover:scale-110 {{ $isFavorited ? 'text-red-400' : 'text-gray-300' }}"
-                        data-id="{{ $recipe->id }}" title="お気に入りに追加">
-                        <i class="bi {{ $isFavorited ? 'bi-heart-fill' : 'bi-heart' }}"></i>
-                    </button>
+                {{-- お気に入りボタン（機能そのまま） --}}
+                <button type="button" class="favorite-btn text-2xl transition-transform hover:scale-110"
+                    data-id="{{ $recipe->id }}">
+                    <i class="bi {{ $isFavorited ? 'bi-heart-fill text-[#C1A173]' : 'bi-heart text-gray-300' }}"></i>
+                </button>
 
-                    {{-- 編集ボタン（自分用メモを書き足す時用！） --}}
-                    @if (auth()->check() && auth()->id() === $recipe->user_id)
-                        <a href="{{ url('/recipe_update/' . $recipe->id) }}"
-                            class="inline-flex items-center justify-center rounded-xl border border-[#C1A173] bg-white px-5 py-2.5 text-[11px] font-bold text-[#C1A173] hover:bg-[#FAF9F6] transition-all tracking-widest shadow-sm">
-                            <i class="bi bi-pencil mr-1.5"></i> メモを編集
-                        </a>
-                    @endif
-                </div>
             </div>
 
-            {{-- 👑 レシピカード本体 --}}
-            <div class="bg-white rounded-3xl shadow-sm border border-[#EAE4DD] overflow-hidden">
+            {{-- レシピカード本体 --}}
+            <div class="bg-white rounded-3xl shadow-lg shadow-[#8C7A6B]/5 border border-[#EAE4DD] overflow-hidden mb-10">
 
-                {{-- ヘッダー部分（タイトルとカテゴリー） --}}
+                {{-- ヘッダー部分 --}}
                 <div class="bg-[#FCFBFA] px-8 py-10 border-b border-[#EAE4DD] text-center relative">
-                    {{-- カテゴリーバッジ --}}
-                    <span
-                        class="inline-block bg-[#F5F2EF] text-[#8C7A6B] text-[10px] font-bold px-3 py-1 rounded-full tracking-widest mb-4">
-                        {{ optional($recipe->category)->name ?? '未分類' }}
-                    </span>
+                    {{-- カテゴリバッジ --}}
+                    @if ($recipe->category)
+                        <div class="absolute top-6 left-1/2 transform -translate-x-1/2">
+                            <span
+                                class="bg-[#F5F2EF] text-[#8C7A6B] px-3 py-1 rounded-full text-[10px] font-bold tracking-widest border border-[#EAE4DD]">
+                                {{ $recipe->category->name }}
+                            </span>
+                        </div>
+                    @endif
 
-                    {{-- タイトル --}}
-                    <h1 class="text-2xl sm:text-3xl font-bold text-gray-800 leading-tight tracking-wide mb-2"
-                        style="font-family: ui-serif, Georgia, Cambria, 'Times New Roman', Times, serif;">
+                    <h2
+                        class="text-3xl sm:text-4xl font-extrabold text-[#4A3F35] leading-tight tracking-wide mb-2 mt-4 font-sans">
                         {{ $recipe->title }}
-                    </h1>
-                    <div class="w-12 h-0.5 bg-[#C1A173] mx-auto mt-6"></div>
+                    </h2>
+                    <div class="w-12 h-1 bg-[#C1A173] mx-auto mt-6 rounded-full"></div>
                 </div>
 
-                {{-- コンテンツ部分（2カラムレイアウト） --}}
-                <div class="p-8 sm:p-12 grid grid-cols-1 lg:grid-cols-12 gap-12">
+                <div class="p-8 sm:p-12 space-y-10">
 
-                    {{-- 左カラム：材料 ＆ 参考URL --}}
-                    <div class="lg:col-span-5 space-y-8">
-
-                        {{-- 完成画像（もしあれば） --}}
-                        @if (!empty($recipe->finished_image))
+                    {{-- キッズ向け・魔法の工夫（データがある時だけ表示） --}}
+                    @if ($recipe->kids_tips)
+                        <div class="bg-orange-50/50 border border-orange-100 rounded-2xl p-6 relative">
                             <div
-                                class="aspect-square rounded-2xl overflow-hidden bg-[#FAF9F6] border border-[#EAE4DD] shadow-inner">
-                                <img src="{{ $recipe->finished_image }}" alt="完成写真" class="w-full h-full object-cover">
+                                class="absolute -top-4 left-6 bg-white border border-orange-200 px-4 py-1 rounded-full text-[11px] font-bold text-orange-400 tracking-widest flex items-center shadow-sm">
+                                <i class="bi bi-stars mr-1.5 text-orange-300"></i> キッズ向け・魔法の工夫
                             </div>
-                        @endif
-
-                        {{-- 材料リスト --}}
-                        <div class="bg-[#FAF9F6] rounded-2xl p-6 border border-[#EAE4DD]">
-                            <h3
-                                class="text-[13px] font-bold text-[#8C7A6B] tracking-widest border-b border-[#EAE4DD] pb-3 mb-4 flex items-center">
-                                <i class="bi bi-basket mr-2 text-[#C1A173]"></i> 材料
-                            </h3>
-                            @if (!empty($recipe->ingredients))
-                                <div class="text-sm text-gray-700 leading-loose whitespace-pre-wrap font-medium">
-                                    {{ trim($recipe->ingredients) }}</div>
-                            @else
-                                <p class="text-xs text-gray-400 font-bold tracking-widest">材料が登録されていません</p>
-                            @endif
+                            <p class="text-sm font-bold text-gray-700 leading-loose tracking-wide pt-3 px-2">
+                                {{ $recipe->kids_tips }}
+                            </p>
                         </div>
+                    @endif
 
-                        {{-- 参考URL（もしあれば） --}}
-                        @if (!empty($recipe->url))
-                            <div>
-                                <h3 class="text-[11px] font-bold text-gray-400 tracking-widest mb-2"><i
-                                        class="bi bi-link-45deg mr-1"></i> 参考レシピ</h3>
-                                <a href="{{ $recipe->url }}" target="_blank" rel="noopener"
-                                    class="text-xs text-[#C1A173] hover:underline break-all font-bold">
-                                    {{ $recipe->url }}
-                                </a>
+                    {{-- カラムを分けるグリッド --}}
+                    <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
+
+                        {{-- 左カラム：材料 ＆ 栄養グラフ --}}
+                        <div class="lg:col-span-5 space-y-8">
+
+                            {{-- 材料 --}}
+                            <div class="bg-[#FAF9F6] rounded-2xl p-6 border border-[#EAE4DD]">
+                                <h3
+                                    class="text-[13px] font-bold text-[#8C7A6B] tracking-widest border-b border-[#EAE4DD] pb-3 mb-4 flex items-center">
+                                    <i class="bi bi-basket mr-2 text-[#C1A173]"></i> 使う材料
+                                </h3>
+                                <ul class="text-sm text-gray-700 font-medium space-y-2">
+                                    @forelse ($ingredientsList as $ing)
+                                        <li class="flex items-start border-b border-gray-100 pb-2 last:border-0 last:pb-0">
+                                            <i class="bi bi-check2 text-[#C1A173] mr-2 text-lg leading-none mt-0.5"></i>
+                                            <span class="pt-0.5">{{ $ing }}</span>
+                                        </li>
+                                    @empty
+                                        <li class="text-gray-400 text-xs">材料が登録されていません</li>
+                                    @endforelse
+                                </ul>
                             </div>
-                        @endif
-                    </div>
 
-                    {{-- 右カラム：作り方 ＆ メモ --}}
-                    <div class="lg:col-span-7 space-y-8">
-
-                        {{-- 料理メモ（AIの解説などはここに入る想定） --}}
-                        <div>
-                            <h3
-                                class="text-[13px] font-bold text-[#8C7A6B] tracking-widest border-b border-[#EAE4DD] pb-3 mb-4 flex items-center">
-                                <i class="bi bi-journal-text mr-2 text-[#C1A173]"></i> 作り方・料理メモ
-                            </h3>
-                            @if (!empty($recipe->memo))
-                                <div
-                                    class="text-sm text-gray-700 leading-loose whitespace-pre-wrap font-medium bg-white p-2 rounded-xl">
-                                    {{ trim($recipe->memo) }}</div>
-                            @else
-                                <p class="text-xs text-gray-400 font-bold tracking-widest px-2">メモはありません</p>
-                            @endif
-                        </div>
-
-                        {{-- 手順（昔の名残。データがあれば表示する） --}}
-                        @php $hasSteps = false; @endphp
-                        @for ($i = 1; $i <= 15; $i++)
-                            @php
-                                $textKey = 'step' . $i;
-                                if (!empty($recipe->$textKey)) {
-                                    $hasSteps = true;
-                                }
-                            @endphp
-                        @endfor
-
-                        @if ($hasSteps)
-                            <div class="space-y-6 pt-4">
-                                @for ($i = 1; $i <= 15; $i++)
-                                    @php
-                                        $textKey = 'step' . $i;
-                                        $text = $recipe->$textKey ?? null;
-                                    @endphp
-                                    @if (!empty($text))
-                                        <div class="flex gap-4 items-start">
-                                            <div
-                                                class="flex-shrink-0 w-7 h-7 rounded-full bg-[#F5F2EF] text-[#8C7A6B] flex items-center justify-center text-[11px] font-bold mt-0.5">
-                                                {{ $i }}
+                            {{-- 栄養グラフ（データがある時だけ表示） --}}
+                            @if (!empty($recipe->nutrition) && is_array($recipe->nutrition))
+                                <div class="bg-white rounded-2xl p-6 border border-[#EAE4DD] shadow-sm">
+                                    <h3 class="text-[13px] font-bold text-[#8C7A6B] tracking-widest mb-6 flex items-center">
+                                        <i class="bi bi-bar-chart-line mr-2 text-[#C1A173]"></i> 栄養バランス
+                                    </h3>
+                                    <div class="space-y-4">
+                                        @foreach ($recipe->nutrition as $label => $score)
+                                            <div class="flex items-center">
+                                                <span
+                                                    class="w-20 text-[11px] font-bold text-gray-500 tracking-widest">{{ $label }}</span>
+                                                <div
+                                                    class="flex-1 h-2.5 bg-[#F5F2EF] rounded-full overflow-hidden ml-3 relative">
+                                                    <div class="absolute top-0 left-0 h-full bg-gradient-to-r from-[#D4C3A3] to-[#C1A173] rounded-full"
+                                                        style="width: {{ (intval($score) / 5) * 100 }}%"></div>
+                                                </div>
+                                                <span
+                                                    class="w-10 text-right text-[11px] font-bold text-[#8C7A6B] tracking-widest">{{ $score }}/5</span>
                                             </div>
-                                            <div
-                                                class="text-sm text-gray-700 leading-relaxed font-medium pt-1 whitespace-pre-wrap">
-                                                {{ trim($text) }}</div>
-                                        </div>
-                                    @endif
-                                @endfor
-                            </div>
-                        @endif
+                                        @endforeach
+                                    </div>
+                                </div>
+                            @endif
 
-                    </div>
+                        </div>
+
+                        {{-- 右カラム：作り方 ＆ メモ --}}
+                        <div class="lg:col-span-7 space-y-8">
+
+                            {{-- 手順（データがある時だけ表示） --}}
+                            @if (!empty($recipe->steps) && is_array($recipe->steps))
+                                <div>
+                                    <h3
+                                        class="text-[13px] font-bold text-[#8C7A6B] tracking-widest border-b border-[#EAE4DD] pb-3 mb-6 flex items-center">
+                                        <i class="bi bi-magic mr-2 text-[#C1A173]"></i> 作り方
+                                    </h3>
+                                    <div class="space-y-6">
+                                        @foreach ($recipe->steps as $index => $step)
+                                            <div class="flex gap-4 items-start">
+                                                <div
+                                                    class="flex-shrink-0 w-8 h-8 rounded-full bg-[#8C7A6B] text-white flex items-center justify-center text-xs font-bold shadow-md shadow-[#8C7A6B]/20">
+                                                    {{ $index + 1 }}
+                                                </div>
+                                                <div class="text-sm text-gray-700 leading-relaxed font-medium pt-1.5">
+                                                    {{ $step }}
+                                                </div>
+                                            </div>
+                                        @endforeach
+                                    </div>
+                                </div>
+                            @endif
+
+                            {{-- メモ・アレンジ --}}
+                            @if ($recipe->memo)
+                                <div class="bg-gray-50 border border-gray-100 rounded-2xl p-5 flex items-start gap-3 mt-4">
+                                    <i class="bi bi-lightbulb text-xl text-[#C1A173] pt-0.5"></i>
+                                    <div class="flex-1">
+                                        <span
+                                            class="text-[10px] font-bold text-[#C1A173] tracking-widest block mb-1.5">メモ・大人向けアレンジ</span>
+                                        {{-- nl2brで改行を反映させるよ！ --}}
+                                        <p class="text-xs font-bold text-gray-600 leading-loose">
+                                            {!! nl2br(e($recipe->memo)) !!}
+                                        </p>
+                                    </div>
+                                </div>
+                            @endif
+
+                        </div>
+                    </div> {{-- グリッド終了 --}}
                 </div>
+            </div> {{-- レシピカード終了 --}}
+
+            {{-- 編集・削除ボタン --}}
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-4 pb-10">
+                <a href="{{ route('recipe.edit', $recipe->id) }}"
+                    class="w-full sm:w-auto px-10 py-3.5 bg-white text-[#C1A173] border border-[#C1A173] rounded-xl text-xs font-bold hover:bg-[#FAF9F6] transition-colors tracking-widest text-center shadow-sm">
+                    <i class="bi bi-pencil mr-1"></i> 編集する
+                </a>
+
+                {{-- 削除モーダルボタン --}}
+                <button type="button"
+                    onclick="openSharedDeleteModal('{{ route('recipe.destroy', $recipe->id) }}', '{{ $recipe->title }}')"
+                    class="w-full sm:w-auto px-8 py-3.5 text-xs font-bold text-red-400 hover:text-red-600 transition-colors tracking-widest text-center bg-white border border-red-100 rounded-xl shadow-sm hover:bg-red-50">
+                    <i class="bi bi-trash mr-1"></i> 削除
+                </button>
             </div>
+
         </div>
+
+        {{-- 共通パーツ：削除モーダルを召喚！ --}}
+        @include('components.delete-modal')
+
     </div>
 
 @endsection
 
 @section('js')
     <script src="{{ asset('js/recipe_favorite.js') }}"></script>
+    <script src="{{ asset('js/shared_components.js') }}"></script>
 @endsection

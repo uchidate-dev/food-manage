@@ -184,10 +184,19 @@ class IngredientController extends Controller
             return response()->json(['success' => true, 'message' => '食材を削除しました。']);
         }
 
-        // 一覧画面に戻って、トースト通知を出す
-        return redirect('/ingredient_list')->with('success', '食材を削除しました。');
-    }
+        // 🪄 ここからがプロの気の利いた魔法！
 
+        // 直前のURL（どこから削除ボタンを押したか）を取得
+        $previousUrl = url()->previous();
+
+        // もし「編集画面」で削除ボタンを押していたら、一覧画面へ逃がす！
+        if (str_contains($previousUrl, 'ingredient_update')) {
+            return redirect('/ingredient_list')->with('success', '食材を削除しました。');
+        }
+
+        // それ以外（ホーム画面や一覧画面）なら、そのまま元の画面に留まる！
+        return back()->with('success', '食材を削除しました。');
+    }
     // 食材の編集画面を表示する処理
     public function edit($id)
     {

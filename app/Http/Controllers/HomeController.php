@@ -30,12 +30,12 @@ class HomeController extends Controller
             ->orderBy('expiration_date', 'asc')
             ->get();
 
-        // --- 3. 今日・明日期限の食材（優先度高：黄色） ---
+        // --- 3. 今日〜3日後が期限の食材（優先度高：黄色） ---
         $soon = clone $baseQuery;
         $soonItems = $soon->whereNotNull('expiration_date')
             ->whereBetween('expiration_date', [
                 $today->toDateString(),
-                $today->copy()->addDays(1)->toDateString() // 今日と明日
+                $today->copy()->addDays(3)->toDateString() // 今日〜3日後までをバッチリ拾う！
             ])
             ->orderBy('expiration_date', 'asc')
             ->get();

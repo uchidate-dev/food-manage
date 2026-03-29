@@ -17,14 +17,10 @@ class Recipe extends Model
         'private_flg',
         'favorite_flg',
         'ingredients',
-        'finished_image',
         'memo',
-        'step1','step2','step3','step4','step5',
-        'step6','step7','step8','step9','step10',
-        'step11','step12','step13','step14','step15',
-        'step_image1','step_image2','step_image3','step_image4','step_image5',
-        'step_image6','step_image7','step_image8','step_image9','step_image10',
-        'step_image11','step_image12','step_image13','step_image14','step_image15',
+        'kids_tips',
+        'steps',
+        'nutrition',
     ];
 
     protected $casts = [
@@ -32,6 +28,8 @@ class Recipe extends Model
         'recipe_category_id' => 'integer',
         'private_flg' => 'integer',
         'favorite_flg' => 'integer',
+        'steps' => 'array',
+        'nutrition' => 'array',
     ];
 
     // 作成者

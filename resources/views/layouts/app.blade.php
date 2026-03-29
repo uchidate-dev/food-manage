@@ -72,6 +72,8 @@
 
         @yield('js')
     </div>
+
+    <script src="{{ asset('js/shared_components.js') }}"></script>
 </body>
 
 </html>

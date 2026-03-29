@@ -43,7 +43,6 @@ Route::middleware('auth')->group(function () {
         Route::get('/user_list', 'list')->name('user_list');
         Route::get('/user_edit/{id}', 'edit');
         Route::put('/user_update/{id}', 'update')->name('user_update');
-        Route::delete('/user_delete/{id}', 'destroy')->name('user_delete');
     });
 
     //  食材管理（Kitchen Stock）
@@ -51,7 +50,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/ingredient_list', 'index')->name('ingredient.list');
         Route::get('/ingredient_register', 'create')->name('ingredient.register');
         Route::post('/ingredients', 'store');
-        Route::post('/ingredient_delete/{id}', 'destroy'); // Ajax削除対応
+        Route::delete('/ingredient_delete/{id}', 'destroy');
         Route::get('/ingredient_update/{id}', 'edit');
         Route::put('/ingredient_update/{id}', 'update');
     });
@@ -60,15 +59,17 @@ Route::middleware('auth')->group(function () {
     Route::controller(RecipeController::class)->group(function () {
         Route::get('/recipe_list', 'index')->name('recipe.list');
         Route::get('/recipe_detail/{id}', 'show')->name('recipe.detail');
-        Route::get('/recipe_update/{id}', 'edit');
-        Route::patch('/recipe_update/{id}', 'update');
-        Route::delete('/recipe_update/{id}', 'destroy');
 
-        // お気に入り機能（Ajax）
-        Route::post('/recipes/{recipe}/favorite', 'toggleFavorite')->name('recipes.favorite.toggle');
+        // 編集・更新・削除に名前を付けました！
+        Route::get('/recipe_update/{id}', 'edit')->name('recipe.edit');
+        Route::patch('/recipe_update/{id}', 'update')->name('recipe.update');
+        Route::delete('/recipe_delete/{id}', 'destroy')->name('recipe.destroy'); // 重複していた削除もこれ1つに！
 
-        // AI献立提案用のルート
-        Route::get('/recipe/suggest', [App\Http\Controllers\RecipeController::class, 'suggest'])->name('recipe.suggest');
-        Route::post('/recipe/suggest/save', [App\Http\Controllers\RecipeController::class, 'saveSuggestion'])->name('recipe.suggest.save');
+        // お気に入り機能（Ajax）※ViewのJS（/recipe/〜）に合わせて s を取ったよ！
+        Route::post('/recipe/{recipe}/favorite', 'toggleFavorite')->name('recipes.favorite.toggle');
+
+        // AI献立提案用のルート（スッキリ書けるように少し短縮！）
+        Route::get('/recipe/suggest', 'suggest')->name('recipe.suggest');
+        Route::post('/recipe/suggest/save', 'saveSuggestion')->name('recipe.suggest.save');
     });
 });

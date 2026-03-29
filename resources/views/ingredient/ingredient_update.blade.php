@@ -10,42 +10,12 @@
 
         {{-- トースト通知 --}}
         @if (session('success'))
-            <div id="toast"
-                class="fixed top-8 left-1/2 transform -translate-x-1/2 -translate-y-5 opacity-0 z-50 transition-all duration-200 ease-out flex flex-col gap-4">
-                <div
-                    class="flex items-center bg-white border-l-4 border-[#C1A173] rounded shadow-lg px-8 py-4 min-w-[320px]">
-                    <i class="bi bi-check-circle-fill text-[#C1A173] text-lg mr-3"></i>
-                    <p class="text-sm font-bold text-gray-700 tracking-widest">{{ session('success') }}</p>
-                </div>
+            <div id="flash-message"
+                class="fixed top-24 left-1/2 transform -translate-x-1/2 z-50 bg-[#C1A173] text-white px-8 py-3.5 rounded-full shadow-lg shadow-[#C1A173]/30 font-bold text-xs tracking-widest flex items-center transition-opacity duration-500">
+                <i class="bi bi-check-circle-fill mr-2 text-lg"></i>
+                {{ session('success') }}
             </div>
         @endif
-
-        {{-- 優しい角丸の削除モーダル --}}
-        <div id="deleteModal"
-            class="hidden fixed inset-0 z-50 flex items-center justify-center bg-[#4A4A4A]/40 backdrop-blur-sm transition-opacity">
-            <div class="bg-white rounded-2xl shadow-2xl p-10 max-w-sm w-full text-center">
-                <div class="text-red-400 text-4xl mb-4"><i class="bi bi-exclamation-circle"></i></div>
-                <h3 class="text-lg font-bold text-gray-800 tracking-widest mb-3">本当に削除しますか？</h3>
-                <p class="text-[11px] font-medium text-gray-400 leading-relaxed mb-8">
-                    削除したデータは元に戻すことができません。<br>本当に削除してもよろしいですか？
-                </p>
-
-                {{-- 削除用の送信フォーム（今の食材のIDをセット） --}}
-                <form id="deleteForm" action="{{ url('/ingredient_delete/' . $ingredient->id) }}" method="POST">
-                    @csrf
-                    <div class="flex gap-3">
-                        <button type="button" onclick="closeDeleteModal()"
-                            class="flex-1 border border-gray-200 text-gray-500 px-4 py-3 rounded-xl text-xs font-bold transition-colors hover:bg-gray-50 tracking-widest">
-                            キャンセル
-                        </button>
-                        <button type="submit"
-                            class="flex-1 bg-red-400 text-white px-4 py-3 rounded-xl text-xs font-bold shadow-md transition-colors hover:bg-red-500 tracking-widest">
-                            削除する
-                        </button>
-                    </div>
-                </form>
-            </div>
-        </div>
 
         <div class="w-full max-w-xl">
 
@@ -166,8 +136,9 @@
                         <div
                             class="mt-12 flex flex-col sm:flex-row items-center justify-between gap-4 pt-6 border-t border-gray-100">
 
-                            {{-- 削除ボタン（左側） --}}
-                            <button type="button" onclick="openDeleteModal()"
+                            {{-- 共通の削除モーダル --}}
+                            <button type="button"
+                                onclick="openSharedDeleteModal('/ingredient_delete/{{ $ingredient->id }}', '{{ $ingredient->name }}')"
                                 class="w-full sm:w-auto flex justify-center items-center text-[11px] font-bold text-red-400 hover:text-red-500 hover:bg-red-50 px-4 py-3 rounded-xl transition-all tracking-widest">
                                 <i class="bi bi-trash3 mr-1.5 text-sm"></i> 削除する
                             </button>
@@ -185,14 +156,11 @@
                             </div>
                         </div>
                     </form>
-
                 </div>
             </div>
         </div>
-    </div>
-@endsection
+        {{--  共通パーツの削除モーダルの呼び出し --}}
+        @include('components.delete-modal')
 
-{{-- JSの処理（モーダルの開閉とトースト） --}}
-@section('js')
-    <script src="{{ asset('js/ingredient_update.js') }}"></script>
+    </div>
 @endsection

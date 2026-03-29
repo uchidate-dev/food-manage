@@ -13,7 +13,7 @@
 
         <div class="max-w-4xl mx-auto">
 
-            {{--  上部メッセージ --}}
+            {{-- 上部メッセージ --}}
             <div class="text-center mb-8">
                 <div
                     class="inline-flex items-center justify-center bg-white border border-[#C1A173] text-[#C1A173] px-4 py-1.5 rounded-full text-[10px] font-bold tracking-[0.2em] shadow-sm mb-4">
@@ -27,7 +27,7 @@
                 </p>
             </div>
 
-            {{--  レシピカード本体 --}}
+            {{-- レシピカード本体 --}}
             <div class="bg-white rounded-3xl shadow-lg shadow-[#8C7A6B]/5 border border-[#EAE4DD] overflow-hidden mb-10">
 
                 {{-- ヘッダー部分 --}}
@@ -41,7 +41,7 @@
 
                 <div class="p-8 sm:p-12 space-y-10">
 
-                    {{--  キッズ向け・魔法の工夫 --}}
+                    {{-- キッズ向け・魔法の工夫 --}}
                     <div class="bg-orange-50/50 border border-orange-100 rounded-2xl p-6 relative">
                         <div
                             class="absolute -top-4 left-6 bg-white border border-orange-200 px-4 py-1 rounded-full text-[11px] font-bold text-orange-400 tracking-widest flex items-center shadow-sm">
@@ -54,7 +54,7 @@
 
                     {{-- カラムを分けるグリッド --}}
                     <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
-                        {{--  左カラム：材料 ＆ 栄養グラフ --}}
+                        {{-- 左カラム：材料 ＆ 栄養グラフ --}}
                         <div class="lg:col-span-5 space-y-8">
 
                             {{-- 材料 --}}
@@ -64,25 +64,22 @@
                                     <i class="bi bi-basket mr-2 text-[#C1A173]"></i> 使う材料
                                 </h3>
                                 <ul class="text-sm text-gray-700 font-medium space-y-2">
-                                    @foreach (explode("\n", trim($dummyAiRecipe['ingredients'])) as $ing)
-                                        @if (trim($ing) !== '')
+                                    {{-- 🌟 配列の形でデータを取り出すように変更！ --}}
+                                    @if (isset($dummyAiRecipe['ingredients']) && is_array($dummyAiRecipe['ingredients']))
+                                        @foreach ($dummyAiRecipe['ingredients'] as $ing)
                                             <li
                                                 class="flex items-start border-b border-gray-100 pb-2 last:border-0 last:pb-0">
-                                                @if (str_contains($ing, '【'))
-                                                    <span
-                                                        class="text-[#8C7A6B] font-bold text-xs mt-1">{{ trim($ing) }}</span>
-                                                @else
-                                                    <i
-                                                        class="bi bi-check2 text-[#C1A173] mr-2 text-lg leading-none mt-0.5"></i>
-                                                    <span class="pt-0.5">{{ trim($ing) }}</span>
-                                                @endif
+                                                <i class="bi bi-check2 text-[#C1A173] mr-2 text-lg leading-none mt-0.5"></i>
+                                                <span class="pt-0.5">{{ $ing['name'] }}：{{ $ing['quantity'] }}</span>
                                             </li>
-                                        @endif
-                                    @endforeach
+                                        @endforeach
+                                    @else
+                                        <li class="text-gray-400 text-xs">材料データがありません</li>
+                                    @endif
                                 </ul>
                             </div>
 
-                            {{--  栄養グラフ --}}
+                            {{-- 栄養グラフ --}}
                             <div class="bg-white rounded-2xl p-6 border border-[#EAE4DD] shadow-sm">
                                 <h3 class="text-[13px] font-bold text-[#8C7A6B] tracking-widest mb-6 flex items-center">
                                     <i class="bi bi-bar-chart-line mr-2 text-[#C1A173]"></i> 栄養バランス
@@ -106,7 +103,7 @@
 
                         </div>
 
-                        {{--  右カラム：作り方 ＆ メモ --}}
+                        {{-- 右カラム：作り方 ＆ メモ --}}
                         <div class="lg:col-span-7 space-y-8">
 
                             {{-- 手順 --}}
@@ -129,7 +126,7 @@
                                 </div>
                             </div>
 
-                            {{--  大人向け・ちょい足しアレンジ（薄口醤油バージョン） --}}
+                            {{-- 大人向け・ちょい足しアレンジ --}}
                             <div class="bg-gray-50 border border-gray-100 rounded-2xl p-5 flex items-start gap-3 mt-4">
                                 <i class="bi bi-lightbulb text-xl text-[#C1A173] pt-0.5"></i>
                                 <div class="flex-1">
@@ -146,7 +143,7 @@
                 </div> {{-- レシピカード本体の余白終了 --}}
             </div> {{-- レシピカード終了 --}}
 
-            {{--  アクションボタ） --}}
+            {{-- アクションボタン --}}
             <div class="flex flex-col sm:flex-row items-center justify-center gap-4 mt-8 pb-10">
                 <a href="/recipe/suggest" onclick="showLoading()"
                     class="w-full sm:w-auto px-8 py-3.5 text-xs font-bold text-gray-500 hover:text-gray-700 transition-colors tracking-widest text-center border border-[#EAE4DD] bg-white rounded-xl shadow-sm hover:bg-gray-50 flex items-center justify-center whitespace-nowrap">
@@ -165,29 +162,8 @@
             </div>
         </div>
 
-        {{-- ローディング画面 --}}
-        <div id="loading-screen"
-            class="fixed inset-0 bg-[#FAF9F6]/80 z-50 hidden flex-col items-center justify-center backdrop-blur-sm transition-opacity">
-            <div class="animate-bounce mb-6">
-                <i class="bi bi-robot text-6xl text-[#C1A173]"></i>
-            </div>
-            <h3 class="text-2xl font-bold text-[#4A3F35] tracking-widest mb-3 font-sans">
-                AIシェフが調理中...
-            </h3>
-            <p class="text-sm font-bold text-[#8C7A6B] tracking-widest animate-pulse mt-2">
-                冷蔵庫の食材から、最高のレシピを考えています🍳✨
-            </p>
-        </div>
-
-        {{--  ローディング画面を表示するJavaScript --}}
-        <script>
-            function showLoading() {
-                // hidden（隠す）を取って、flex（表示）をつける！
-                const loader = document.getElementById('loading-screen');
-                loader.classList.remove('hidden');
-                loader.classList.add('flex');
-            }
-        </script>
+        {{-- 共通パーツのロボット --}}
+        @include('components.loading-robot')
 
     </div>
 @endsection
