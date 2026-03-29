@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Recipe;
 use App\Models\RecipeCategory;
+use App\Models\Ingredient;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Http;
 
 class RecipeController extends Controller
 {
@@ -139,56 +141,137 @@ class RecipeController extends Controller
         return view('recipe.detail', compact('recipe', 'isFavorited'));
     }
 
-    // =========================================================
-    // 🤖 AI献立提案機能
+// =========================================================
+    // AI献立提案機能
     // =========================================================
 
     /**
-     * AI提案画面（まずはダミーデータで画面デザイン）
+     * AI提案画面（Geminiと通信）
      */
     public function suggest(Request $request)
     {
-        // ※後でここは「本物のAI（API）からの回答」に差し替えます！
-        // 今は画面をデザインするために、理想的なAIの返事を手書きで用意しておきます。
+        // 1. 冷蔵庫の在庫を取得する（自分の食材）
+        $ingredients = Ingredient::where('user_id', auth()->id())->pluck('name')->toArray();
 
-        $dummyAiRecipe = [
-            'title'       => 'お肉やわらか！お野菜たっぷりホイコーロー風',
-            'category_id' => 3, // 中華など
-            'ingredients' => "豚バラ肉: 200g\nキャベツ: 1/4玉\nにんじん: 1/3本\nピーマン: 1個\nごま油: 大さじ1\n【合わせ調味料】\n味噌: 大さじ1\n醤油: 小さじ1\n砂糖: 小さじ1",
-            'memo'        => "大人はお皿に盛った後、豆板醤やラー油を少し垂らすと本格的な味になります！",
+        // もし冷蔵庫が空っぽなら、お助けデフォルト食材を渡す
+        $stockList = empty($ingredients) ? '豚肉、キャベツ、玉ねぎ、卵' : implode('、', $ingredients);
 
-            // 子供の食べやすい工夫
-            'kids_tips'   => "豚肉に薄く片栗粉をまぶして焼くことで、パサパサせず子供でも噛み切りやすくなります！野菜は炒める前にレンジで2分チンしておくと、甘みが増してピーマンの苦味も消えるのでペロリと食べてくれますよ✨",
+        // 2.Geminiへのプロンプト
+        $prompt = "
+        あなたはプロの料理研究家であり、子育て中のママの強い味方です。
+        以下の「冷蔵庫の食材」を使って、子供も喜ぶ美味しいレシピを1つ提案してください。
+        必ず以下のJSON形式のみで出力してください。Markdownのコードブロック(```json等)は絶対に付けないでください。
 
-            // 栄養グラフ用のデータ（5段階評価）
-            'nutrition'   => [
-                'タンパク質' => 4,
-                'ビタミン'   => 5,
-                'カルシウム' => 2,
-                '鉄分'       => 3,
-                'エネルギー' => 4,
+        【冷蔵庫の食材】
+        {$stockList}
+
+        【出力フォーマット（JSON）】
+        {
+            \"title\": \"レシピのタイトル（最大30文字、オシャレな感じで！）\",
+            \"ingredients\": \"使う材料と分量（改行は\\nを使用）\",
+            \"kids_tips\": \"子供が食べやすくなる魔法の工夫（50文字程度）\",
+            \"nutrition\": {
+                \"タンパク質\": 3,
+                \"ビタミン\": 4,
+                \"カルシウム\": 2,
+                \"鉄分\": 3,
+                \"エネルギー\": 4
+            },
+            \"steps\": [
+                \"手順1（具体的に）\",
+                \"手順2\",
+                \"手順3\",
+                \"手順4\"
             ],
+            \"memo\": \"大人向けの味変や、ちょっとしたアレンジのアイデア\"
+        }
+        ";
 
-            // 手順は配列で持っておくと、画面で番号(1,2,3...)を振りやすい
-            'steps'       => [
-                'キャベツ、にんじん、ピーマンは子供が食べやすい小さめの乱切りにし、耐熱ボウルに入れてふんわりラップをし、600Wで2分加熱する。',
-                '豚バラ肉は3cm幅に切り、ポリ袋に入れて片栗粉を薄くまぶす。',
-                'フライパンにごま油を熱し、豚肉を炒める。色が変わったら、1の野菜を汁気を切って加える。',
-                '全体に油が回ったら、【合わせ調味料】を入れてサッと炒め合わせれば完成！',
-            ],
-        ];
+        //3.Gemini API の呼び出し
+        $apiKey = env('GEMINI_API_KEY');
 
-        // recipeフォルダーの中に suggest.blade.php を作る想定
+        try {
+            $response = Http::withoutVerifying()->withHeaders([
+                'Content-Type' => 'application/json',
+            ])->post("https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key={$apiKey}", [
+                'contents' => [
+                    ['parts' => [['text' => $prompt]]]
+                ],
+                'generationConfig' => [
+                    'response_mime_type' => 'application/json',
+                ]
+            ]);
+
+            // 通信成功したら、AIの返事を配列に変換
+            if ($response->successful()) {
+                $resultText = $response->json('candidates.0.content.parts.0.text');
+                $dummyAiRecipe = json_decode($resultText, true);
+
+                if (!$dummyAiRecipe) {
+                    throw new \Exception("AIの返事がJSON形式ではありませんでした。");
+                }
+            } else {
+                // APIエラー時は例外を投げてcatchに拾ってもらう
+                throw new \Exception("API通信エラー");
+            }
+        } catch (\Exception $e) {
+            // お知らせ画面
+            $dummyAiRecipe = [
+                'title'       => '【お知らせ】お野菜たっぷりホイコーロー風',
+                'ingredients' => "豚バラ肉: 200g\nキャベツ: 1/4玉",
+                'kids_tips'   => "申し訳ございません。現在AIシェフが席を外しております☕️ 少しお時間を置いてから再度お試しくださいませ✨",
+                'nutrition'   => ['タンパク質' => 3, 'ビタミン' => 3, 'カルシウム' => 3, '鉄分' => 3, 'エネルギー' => 3],
+                'steps'       => ['AIシェフの帰りを待っています...'],
+                'memo'        => "APIキーの設定や、サーバーの再起動をご確認いただけますと幸いです！",
+            ];
+        }
+
+
         return view('recipe.suggest', compact('dummyAiRecipe'));
     }
 
     /**
-     * 提案されたレシピをDBに保存する処理（今はまだ空っぽでOK）
+     * 提案されたレシピをDBに保存する処理
      */
     public function saveSuggestion(Request $request)
     {
-        // 画面ができたら、ここでAIのデータをRecipeモデルに保存する処理を書きます！
-        // 保存したら、詳細画面へリダイレクト！
-        return redirect('/recipe_list')->with('success', 'AIの提案をレシピ帳に保存しました！');
+        // 1. Bladeの隠しフィールドから、AIのレシピデータ（JSON）を受け取って配列に戻す
+        $aiData = json_decode($request->input('ai_recipe_data'), true);
+
+        if (!$aiData) {
+            return back()->with('error', 'データの保存に失敗しました💦');
+        }
+
+        // 2. とりあえず一番最初のカテゴリー（「メイン」など）を取得（無ければ1にする）
+        $defaultCategory = \App\Models\RecipeCategory::first();
+
+        // 3. AIのデータを、DBの形に合わせて整理
+
+        // 材料を入れる
+        $memoContent = "🛒 【使う材料】\n" . $aiData['ingredients'] . "\n\n";
+
+        // キッズ向けの工夫
+        $memoContent .= "✨ 【AIシェフのキッズ向け工夫】\n" . $aiData['kids_tips'] . "\n\n";
+
+
+        // 作り方を順番に入れる！
+        $memoContent .= "🍳 【作り方】\n";
+        foreach ($aiData['steps'] as $index => $step) {
+            $memoContent .= ($index + 1) . ". " . $step . "\n";
+        }
+
+        // 最後に大人向けアレンジ！
+        $memoContent .= "\n🍷 【大人向けアレンジ】\n" . $aiData['memo'];
+
+        // 4. データベースに新しいレシピとして保存！
+        $recipe = new Recipe();
+        $recipe->user_id = auth()->id();
+        $recipe->recipe_category_id = $defaultCategory->id ?? 1; // とりあえず最初のカテゴリ
+        $recipe->title = $aiData['title'];
+        $recipe->memo = $memoContent; // ぜんぶ詰めた巨大なメモをここにIN！
+        $recipe->save();
+
+        // 5. 保存したら一覧画面へリダイレクト！
+        return redirect('/recipe_list')->with('success', 'AIの提案をレシピ帳に保存しました！📖✨');
     }
 }

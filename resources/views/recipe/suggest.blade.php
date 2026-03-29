@@ -27,12 +27,11 @@
                 </p>
             </div>
 
-            {{-- 👑 レシピカード本体 --}}
+            {{--  レシピカード本体 --}}
             <div class="bg-white rounded-3xl shadow-lg shadow-[#8C7A6B]/5 border border-[#EAE4DD] overflow-hidden mb-10">
 
                 {{-- ヘッダー部分 --}}
                 <div class="bg-[#FCFBFA] px-8 py-10 border-b border-[#EAE4DD] text-center">
-                    {{-- 色を濃いチャコールブラウンにし、太さも「extrabold」、サイズも一段階大きく！ --}}
                     <h2
                         class="text-3xl sm:text-4xl font-extrabold text-[#4A3F35] leading-tight tracking-wide mb-2 font-sans">
                         {{ $dummyAiRecipe['title'] }}
@@ -55,7 +54,6 @@
 
                     {{-- カラムを分けるグリッド --}}
                     <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
-
                         {{--  左カラム：材料 ＆ 栄養グラフ --}}
                         <div class="lg:col-span-5 space-y-8">
 
@@ -148,22 +146,48 @@
                 </div> {{-- レシピカード本体の余白終了 --}}
             </div> {{-- レシピカード終了 --}}
 
-            {{--  アクションボタン（レシピカードの外に出しました！） --}}
+            {{--  アクションボタ） --}}
             <div class="flex flex-col sm:flex-row items-center justify-center gap-4 mt-8 pb-10">
-                <a href="/recipe_list"
+                <a href="/recipe/suggest" onclick="showLoading()"
                     class="w-full sm:w-auto px-8 py-3.5 text-xs font-bold text-gray-500 hover:text-gray-700 transition-colors tracking-widest text-center border border-[#EAE4DD] bg-white rounded-xl shadow-sm hover:bg-gray-50 flex items-center justify-center whitespace-nowrap">
                     <i class="bi bi-arrow-clockwise mr-2"></i> 別の献立を提案してもらう
                 </a>
-
                 <form action="{{ route('recipe.suggest.save') }}" method="POST" class="w-full sm:w-auto m-0">
                     @csrf
+                    {{-- AIが考えたJSONデータを丸ごとコントローラーに送る準備！ --}}
+                    <input type="hidden" name="ai_recipe_data" value="{{ json_encode($dummyAiRecipe) }}">
+
                     <button type="submit"
                         class="w-full sm:w-auto bg-[#C1A173] px-10 py-3.5 rounded-xl text-xs font-bold text-white shadow-lg shadow-[#C1A173]/30 hover:bg-[#A88C61] hover:-translate-y-1 transition-all tracking-[0.2em] flex items-center justify-center whitespace-nowrap">
                         <i class="bi bi-bookmark-heart mr-2 text-lg"></i> レシピ帳に保存する
                     </button>
                 </form>
             </div>
-
         </div>
+
+        {{-- ローディング画面 --}}
+        <div id="loading-screen"
+            class="fixed inset-0 bg-[#FAF9F6]/80 z-50 hidden flex-col items-center justify-center backdrop-blur-sm transition-opacity">
+            <div class="animate-bounce mb-6">
+                <i class="bi bi-robot text-6xl text-[#C1A173]"></i>
+            </div>
+            <h3 class="text-2xl font-bold text-[#4A3F35] tracking-widest mb-3 font-sans">
+                AIシェフが調理中...
+            </h3>
+            <p class="text-sm font-bold text-[#8C7A6B] tracking-widest animate-pulse mt-2">
+                冷蔵庫の食材から、最高のレシピを考えています🍳✨
+            </p>
+        </div>
+
+        {{--  ローディング画面を表示するJavaScript --}}
+        <script>
+            function showLoading() {
+                // hidden（隠す）を取って、flex（表示）をつける！
+                const loader = document.getElementById('loading-screen');
+                loader.classList.remove('hidden');
+                loader.classList.add('flex');
+            }
+        </script>
+
     </div>
 @endsection

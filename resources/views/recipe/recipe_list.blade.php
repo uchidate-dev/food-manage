@@ -13,7 +13,7 @@
     <div class="bg-[#FAF9F6] font-sans text-[#4A4A4A] min-h-screen pb-20">
         <div class="max-w-7xl mx-auto px-6 py-8 md:p-12">
 
-            {{-- 👑 ヘッダーエリア --}}
+            {{-- ヘッダーエリア --}}
             <div class="mb-10 flex flex-col md:flex-row md:items-end justify-between border-b border-[#EAE4DD] pb-8 gap-6">
                 <div>
                     {{-- Dashboardへ戻るリンク --}}
@@ -38,10 +38,10 @@
                 </div>
             </div>
 
-            {{-- 👑 メインコンテンツエリア --}}
+            {{--  メインコンテンツエリア --}}
             <div class="grid grid-cols-12 gap-8">
 
-                {{-- 👈 左サイドバー：フィルタ＆検索 --}}
+                {{--  左サイドバー：フィルタ＆検索 --}}
                 <aside class="col-span-12 lg:col-span-3 space-y-6">
 
                     {{-- 絞り込みカード --}}
@@ -130,7 +130,7 @@
                     </div>
                 </aside>
 
-                {{-- 👉 右メインエリア：レシピ一覧 --}}
+                {{--  右メインエリア：レシピ一覧 --}}
                 <main class="col-span-12 lg:col-span-9">
                     <div class="rounded-2xl border border-[#EAE4DD] bg-white shadow-sm overflow-hidden">
 

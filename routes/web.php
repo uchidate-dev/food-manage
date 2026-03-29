@@ -67,8 +67,8 @@ Route::middleware('auth')->group(function () {
         // お気に入り機能（Ajax）
         Route::post('/recipes/{recipe}/favorite', 'toggleFavorite')->name('recipes.favorite.toggle');
 
-        // AI機能
-        Route::get('/recipe_suggest', 'suggest')->name('recipe.suggest'); // AI提案画面
-        Route::post('/recipe_suggest/save', 'saveSuggestion')->name('recipe.suggest.save'); // 提案されたレシピを保存
+        // AI献立提案用のルート
+        Route::get('/recipe/suggest', [App\Http\Controllers\RecipeController::class, 'suggest'])->name('recipe.suggest');
+        Route::post('/recipe/suggest/save', [App\Http\Controllers\RecipeController::class, 'saveSuggestion'])->name('recipe.suggest.save');
     });
 });
