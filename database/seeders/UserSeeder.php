@@ -6,16 +6,17 @@ use Illuminate\Database\Seeder;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 
-class AdminUserSeeder extends Seeder
+class UserSeeder extends Seeder
 {
     public function run(): void
     {
+        // ゲストユーザーの作成
         User::updateOrCreate(
-            ['email' => 'admin@example.com'], // 重複防止キー
+            ['email' => 'guest@example.com'], // このメアドでログインさせるよ！
             [
-                'name' => '管理者',
+                'name' => 'ゲストユーザー',
                 'password' => Hash::make('password123'),
-                'role' => 1,       // 1 = 管理者
+                'role' => 0,       // 0 = 一般ユーザー
                 'mail_flg' => 0,
             ]
         );

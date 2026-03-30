@@ -2,8 +2,6 @@
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
-
-// 司令塔（コントローラー）たち
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UserRegisterController;
 use App\Http\Controllers\IngredientController;
@@ -39,11 +37,11 @@ Route::middleware('auth')->group(function () {
     Route::get('/home', [HomeController::class, 'index'])->name('home');
 
     //  ユーザー管理
-    Route::controller(UserRegisterController::class)->group(function () {
-        Route::get('/user_list', 'list')->name('user_list');
-        Route::get('/user_edit/{id}', 'edit');
-        Route::put('/user_update/{id}', 'update')->name('user_update');
-    });
+    // Route::controller(UserRegisterController::class)->group(function () {
+    // Route::get('/user_list', 'list')->name('user_list');
+    // Route::get('/user_edit/{id}', 'edit');
+    // Route::put('/user_update/{id}', 'update')->name('user_update');
+    // });
 
     //  食材管理（Kitchen Stock）
     Route::controller(IngredientController::class)->group(function () {
@@ -60,16 +58,19 @@ Route::middleware('auth')->group(function () {
         Route::get('/recipe_list', 'index')->name('recipe.list');
         Route::get('/recipe_detail/{id}', 'show')->name('recipe.detail');
 
-        // 編集・更新・削除に名前を付けました！
+        // 編集・更新・削除
         Route::get('/recipe_update/{id}', 'edit')->name('recipe.edit');
         Route::patch('/recipe_update/{id}', 'update')->name('recipe.update');
         Route::delete('/recipe_delete/{id}', 'destroy')->name('recipe.destroy'); // 重複していた削除もこれ1つに！
 
-        // お気に入り機能（Ajax）※ViewのJS（/recipe/〜）に合わせて s を取ったよ！
+        // お気に入り機能（Ajax）
         Route::post('/recipe/{recipe}/favorite', 'toggleFavorite')->name('recipes.favorite.toggle');
 
-        // AI献立提案用のルート（スッキリ書けるように少し短縮！）
+        // AI献立提案用のルート
         Route::get('/recipe/suggest', 'suggest')->name('recipe.suggest');
         Route::post('/recipe/suggest/save', 'saveSuggestion')->name('recipe.suggest.save');
+
+        // レシピを作った後の「在庫消費ギミック」用のルート
+        Route::post('/recipe/{recipe}/consume', 'consumeIngredients')->name('recipe.consume');
     });
 });

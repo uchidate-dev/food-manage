@@ -14,7 +14,7 @@
         <div class="max-w-3xl mx-auto px-6 py-4">
 
             {{-- ヘッダー --}}
-            <div class="mb-12 flex justify-between items-end border-b border-[#EAE4DD] pb-6">
+            <div class="mb-8 flex justify-between items-end border-b border-[#EAE4DD] pb-6">
                 <div>
                     <h1 class="text-2xl font-bold text-[#8C7A6B] tracking-tight">今日の冷蔵庫レポート</h1>
                     <p class="text-[11px] text-[#C1A173] font-bold tracking-[0.1em] mt-1">
@@ -23,6 +23,35 @@
                 </div>
                 <div class="text-[10px] font-bold text-gray-400 tracking-widest">
                     {{ date('Y.m.d') }}
+                </div>
+            </div>
+            {{-- 在庫サマリー --}}
+            @php
+                $urgentCount =
+                    $expiredItems->count() + $soonItems->where('expiration_date', '<=', date('Y-m-d'))->count();
+                $soonCount = $soonItems->where('expiration_date', '>', date('Y-m-d'))->count();
+            @endphp
+            <div class="grid grid-cols-2 gap-4 mb-10">
+                <div class="bg-white rounded-2xl p-5 border border-[#EAE4DD] shadow-sm flex items-center justify-between">
+                    <div>
+                        <p class="text-[10px] font-bold text-gray-400 tracking-widest mb-1">早めに使いたい食材</p>
+                        <p class="text-2xl font-bold text-red-400">{{ $urgentCount }}<span
+                                class="text-xs ml-1 text-gray-400">件</span></p>
+                    </div>
+                    <div class="w-10 h-10 rounded-full bg-red-50 flex items-center justify-center text-red-400 text-lg">
+                        <i class="bi bi-exclamation-triangle"></i>
+                    </div>
+                </div>
+                <div class="bg-white rounded-2xl p-5 border border-[#EAE4DD] shadow-sm flex items-center justify-between">
+                    <div>
+                        <p class="text-[10px] font-bold text-gray-400 tracking-widest mb-1">近いうちに使う食材</p>
+                        <p class="text-2xl font-bold text-[#C1A173]">{{ $soonCount }}<span
+                                class="text-xs ml-1 text-gray-400">件</span></p>
+                    </div>
+                    <div
+                        class="w-10 h-10 rounded-full bg-[#FAF9F6] flex items-center justify-center text-[#C1A173] text-lg">
+                        <i class="bi bi-check2-square"></i>
+                    </div>
                 </div>
             </div>
 
@@ -167,4 +196,5 @@
 
 @section('js')
     <script src="{{ asset('js/home.js') }}"></script>
+    <script src="{{ asset('js/shared_components.js') }}"></script>
 @endsection

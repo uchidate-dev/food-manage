@@ -5,7 +5,7 @@
 
         <div class="w-full max-w-md bg-white rounded-3xl shadow-sm border border-[#EAE4DD] px-8 py-12 sm:px-12">
 
-            {{--  アプリロゴ ＆ 歓迎メッセージ --}}
+            {{--  アプリロゴ ＆ メッセージ --}}
             <div class="text-center mb-10">
                 <h1 class="text-3xl md:text-4xl font-logo font-bold text-[#8C7A6B] tracking-tight mb-2">
                     My Kitchen <span class="text-[#C1A173]">Stock</span>
@@ -63,14 +63,37 @@
                 </div>
             </form>
 
+            {{-- デモユーザー専用フォーム --}}
+            <div class="mt-8">
+                <div class="relative flex items-center justify-center mb-6">
+                    <div class="flex-grow border-t border-[#EAE4DD]"></div>
+                    <span class="flex-shrink-0 px-4 text-[10px] font-bold text-[#8C7A6B] tracking-widest">
+                        デモユーザーログイン
+                    </span>
+                    <div class="flex-grow border-t border-[#EAE4DD]"></div>
+                </div>
+
+                <form method="POST" action="{{ route('login') }}" class="m-0">
+                    @csrf
+                    <input type="hidden" name="email" value="guest@example.com">
+                    <input type="hidden" name="password" value="password123">
+
+                    <button type="submit"
+                        class="w-full bg-gradient-to-r from-[#C1A173] to-[#A88C61] py-4 rounded-xl text-xs font-bold text-white shadow-md shadow-[#C1A173]/30 hover:opacity-90 hover:-translate-y-0.5 transition-all tracking-[0.2em] flex items-center justify-center">
+                        <i class="bi bi-door-open mr-2 text-lg"></i> ゲストとして1クリックでログイン
+                    </button>
+                </form>
+            </div>
+
             {{-- 新規登録への導線 --}}
-            <div class="mt-10 text-center border-t border-[#EAE4DD] pt-8">
+            <div class="mt-8 text-center border-t border-[#EAE4DD] pt-6">
                 <p class="text-[10px] font-bold text-gray-400 tracking-widest mb-3">アカウントをお持ちでない方</p>
                 <a href="{{ route('user_register') }}"
                     class="inline-block border border-[#C1A173] text-[#C1A173] px-8 py-3 rounded-full text-[11px] font-bold hover:bg-[#FAF9F6] transition-all tracking-widest">
                     新しく始める
                 </a>
             </div>
+
         </div>
     </div>
 @endsection

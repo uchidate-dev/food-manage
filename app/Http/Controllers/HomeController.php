@@ -26,7 +26,7 @@ class HomeController extends Controller
         // --- 2. 期限切れ食材（優先度MAX：赤色） ---
         $expired = clone $baseQuery;
         $expiredItems = $expired->whereNotNull('expiration_date')
-            ->where('expiration_date', '<', $today->toDateString())
+            ->where('expiration_date', '<=', $today->toDateString())
             ->orderBy('expiration_date', 'asc')
             ->get();
 
@@ -34,8 +34,8 @@ class HomeController extends Controller
         $soon = clone $baseQuery;
         $soonItems = $soon->whereNotNull('expiration_date')
             ->whereBetween('expiration_date', [
-                $today->toDateString(),
-                $today->copy()->addDays(3)->toDateString() // 今日〜3日後までをバッチリ拾う！
+                $today->copy()->addDay()->toDateString(),
+                $today->copy()->addDays(3)->toDateString() // 明日〜3日後をバッチリ拾う！
             ])
             ->orderBy('expiration_date', 'asc')
             ->get();

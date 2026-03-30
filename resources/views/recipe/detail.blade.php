@@ -20,12 +20,11 @@
                     <i class="bi bi-chevron-left mr-1"></i> レシピ一覧へ戻る
                 </a>
 
-                {{-- お気に入りボタン（機能そのまま） --}}
+                {{-- お気に入りボタン --}}
                 <button type="button" class="favorite-btn text-2xl transition-transform hover:scale-110"
                     data-id="{{ $recipe->id }}">
                     <i class="bi {{ $isFavorited ? 'bi-heart-fill text-[#C1A173]' : 'bi-heart text-gray-300' }}"></i>
                 </button>
-
             </div>
 
             {{-- レシピカード本体 --}}
@@ -52,7 +51,7 @@
 
                 <div class="p-8 sm:p-12 space-y-10">
 
-                    {{-- キッズ向け・魔法の工夫（データがある時だけ表示） --}}
+                    {{-- キッズ向け（データがある時だけ表示） --}}
                     @if ($recipe->kids_tips)
                         <div class="bg-orange-50/50 border border-orange-100 rounded-2xl p-6 relative">
                             <div
@@ -148,7 +147,6 @@
                                     <div class="flex-1">
                                         <span
                                             class="text-[10px] font-bold text-[#C1A173] tracking-widest block mb-1.5">メモ・大人向けアレンジ</span>
-                                        {{-- nl2brで改行を反映させるよ！ --}}
                                         <p class="text-xs font-bold text-gray-600 leading-loose">
                                             {!! nl2br(e($recipe->memo)) !!}
                                         </p>

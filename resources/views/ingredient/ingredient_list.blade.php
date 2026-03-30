@@ -234,7 +234,7 @@
                                 {{-- 空の時のメッセージ --}}
                                 <tr>
                                     <td colspan="8" class="px-6 py-32 text-center bg-white">
-                                        <span class="text-5xl mb-6 block opacity-50">🧺✨</span>
+                                        <span class="text-5xl mb-6 block opacity-50">🧺</span>
 
                                         @if (empty($selectedCategory))
                                             <h3 class="text-sm font-bold text-[#8C7A6B] tracking-widest mb-2">冷蔵庫はまだ空っぽです
