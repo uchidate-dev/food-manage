@@ -2,8 +2,8 @@
 
 思考コスト削減を目的とした、在庫連動型AI献立提案システム
 
-<img width="1000" alt="ダッシュボード画面" src="public/images/dashboard.png">
-<img width="1000" alt="レシピ詳細画面" src="public/images/recipe_detail.png">
+<img width="1459" height="828" alt="Image" src="https://github.com/user-attachments/assets/6901fa91-55d4-4e9b-a0cd-b4853e6f8955" />
+<img width="1455" height="833" alt="Image" src="https://github.com/user-attachments/assets/84b0be0c-aae2-42ee-910f-cb992330891d" />
 
 ## ターゲットユーザーと提供価値（ビジネスインパクト）
 
