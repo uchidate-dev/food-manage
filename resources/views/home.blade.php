@@ -173,7 +173,7 @@
                         在庫食材からAI献立を生成する
                     </a>
                     <p class="text-center text-[10px] text-gray-300 mt-4 tracking-widest font-medium">
-                        10年の在庫管理ロジックに基づき、最適なレシピを提案します
+                        冷蔵庫の「もったいない」を、AIが美味しい一品に変えます✨
                     </p>
                 </div>
 
