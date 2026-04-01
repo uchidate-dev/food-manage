@@ -167,7 +167,7 @@
 
                 {{-- AIボタン --}}
                 <div class="pt-2">
-                    <a href="/recipe/suggest" onclick="showLoading()"
+                    <a href="/recipe/suggest" onclick="showLoading(event, this.href)"
                         class="w-full bg-[#4A3F35] py-5 rounded-xl text-white text-[13px] font-bold tracking-[0.2em] hover:bg-[#333333] transition-all flex items-center justify-center gap-3 shadow-lg group block text-center">
                         <i class="bi bi-stars group-hover:rotate-12 transition-transform"></i>
                         在庫食材からAI献立を生成する

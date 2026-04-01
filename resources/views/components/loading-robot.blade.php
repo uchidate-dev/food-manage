@@ -13,11 +13,23 @@
 </div>
 
 <script>
-    function showLoading() {
+    function showLoading(event, url = null) {
+        //  もし <a>タグからのクリックなら、一旦「次のページへ飛ぶ」のをストップ
+        if (event) {
+            event.preventDefault();
+        }
+
         const loader = document.getElementById('loading-screen');
         if (loader) {
             loader.classList.remove('hidden');
             loader.classList.add('flex');
+        }
+
+        // ロボットが画面に出るための時間（0.1秒）を作ってから、手動でページ移動
+        if (url) {
+            setTimeout(() => {
+                window.location.href = url;
+            }, 100);
         }
     }
 </script>

@@ -145,7 +145,7 @@
 
             {{-- アクションボタン --}}
             <div class="flex flex-col sm:flex-row items-center justify-center gap-4 mt-8 pb-10">
-                <a href="/recipe/suggest" onclick="showLoading()"
+                <a href="/recipe/suggest" onclick="showLoading(event, this.href)"
                     class="w-full sm:w-auto px-8 py-3.5 text-xs font-bold text-gray-500 hover:text-gray-700 transition-colors tracking-widest text-center border border-[#EAE4DD] bg-white rounded-xl shadow-sm hover:bg-gray-50 flex items-center justify-center whitespace-nowrap">
                     <i class="bi bi-arrow-clockwise mr-2"></i> 別の献立を提案してもらう
                 </a>
