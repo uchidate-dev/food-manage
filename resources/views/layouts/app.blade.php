@@ -57,7 +57,8 @@
                             @csrf
                         </form>
 
-                        <button id="mobile-menu-btn"
+                        <button type="button"
+                            onclick="document.getElementById('mobile-menu').classList.toggle('hidden'); this.querySelector('i').classList.toggle('bi-list'); this.querySelector('i').classList.toggle('bi-x-lg');"
                             class="sm:hidden text-[#8C7A6B] text-2xl focus:outline-none hover:text-[#C1A173] transition-colors">
                             <i class="bi bi-list"></i>
                         </button>
