@@ -29,7 +29,7 @@
         @endif
 
         {{-- 画面上部 タイトル＆検索＆新規登録ボタン --}}
-        <div class="px-6 py-8 md:p-12">
+        <div class="px-4 py-8 md:p-12">
             <div class="mx-auto max-w-6xl">
 
                 <div
@@ -117,27 +117,29 @@
                         <thead class="bg-[#FAF9F6]">
                             <tr>
                                 <th scope="col"
-                                    class="px-6 py-4 text-left text-[11px] font-bold tracking-[0.2em] text-gray-400">カテゴリー
-                                </th>
+                                    class="px-4 py-4 text-left text-[11px] font-bold tracking-[0.2em] text-gray-400 whitespace-nowrap">
+                                    カテゴリー</th>
                                 <th scope="col"
-                                    class="px-6 py-4 text-left text-[11px] font-bold tracking-[0.2em] text-gray-400">食材名
-                                </th>
+                                    class="px-4 py-4 text-left text-[11px] font-bold tracking-[0.2em] text-gray-400 whitespace-nowrap">
+                                    食材名</th>
                                 <th scope="col"
-                                    class="px-6 py-4 text-left text-[11px] font-bold tracking-[0.2em] text-gray-400">保管場所
-                                </th>
+                                    class="px-4 py-4 text-left text-[11px] font-bold tracking-[0.2em] text-gray-400 whitespace-nowrap hidden md:table-cell">
+                                    保管場所</th>
                                 <th scope="col"
-                                    class="px-6 py-4 text-left text-[11px] font-bold tracking-[0.2em] text-gray-400">状態</th>
+                                    class="px-4 py-4 text-left text-[11px] font-bold tracking-[0.2em] text-gray-400 whitespace-nowrap hidden sm:table-cell">
+                                    状態</th>
                                 <th scope="col"
-                                    class="px-6 py-4 text-center text-[11px] font-bold tracking-[0.2em] text-gray-400">数量
-                                </th>
+                                    class="px-4 py-4 text-center text-[11px] font-bold tracking-[0.2em] text-gray-400 whitespace-nowrap hidden sm:table-cell">
+                                    数量</th>
                                 <th scope="col"
-                                    class="px-6 py-4 text-center text-[11px] font-bold tracking-[0.2em] text-gray-400">賞味期限
-                                </th>
+                                    class="px-4 py-4 text-center text-[11px] font-bold tracking-[0.2em] text-gray-400 whitespace-nowrap">
+                                    賞味期限</th>
                                 <th scope="col"
-                                    class="px-6 py-4 text-left text-[11px] font-bold tracking-[0.2em] text-gray-400">メモ</th>
+                                    class="px-4 py-4 text-left text-[11px] font-bold tracking-[0.2em] text-gray-400 whitespace-nowrap hidden lg:table-cell">
+                                    メモ</th>
                                 <th scope="col"
-                                    class="px-6 py-4 text-center text-[11px] font-bold tracking-[0.2em] text-gray-400">操作
-                                </th>
+                                    class="px-4 py-4 text-center text-[11px] font-bold tracking-[0.2em] text-gray-400 whitespace-nowrap">
+                                    操作</th>
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-[#EAE4DD] bg-white">
@@ -146,25 +148,25 @@
                                 <tr class="transition-colors hover:bg-[#FFFDFB] group">
 
                                     {{-- カテゴリー＆アイコン --}}
-                                    <td class="px-6 py-4 whitespace-nowrap">
-                                        <div class="flex items-center gap-3">
+                                    <td class="px-4 py-4 whitespace-nowrap">
+                                        <div class="flex items-center gap-2 sm:gap-3">
                                             <div
-                                                class="w-8 h-8 rounded-full bg-[#FAF9F6] flex items-center justify-center text-sm shadow-inner">
+                                                class="w-8 h-8 rounded-full bg-[#FAF9F6] flex items-center justify-center text-sm shadow-inner shrink-0">
                                                 {{ $ingredient['icon'] }}
                                             </div>
                                             <span
-                                                class="text-xs font-bold text-gray-500 tracking-widest">{{ $ingredient['category_name'] }}</span>
+                                                class="text-[10px] sm:text-xs font-bold text-gray-500 tracking-widest">{{ $ingredient['category_name'] }}</span>
                                         </div>
                                     </td>
 
                                     {{-- 食材名 --}}
-                                    <td class="px-6 py-4 max-w-[200px] whitespace-normal break-all">
+                                    <td class="px-4 py-4 whitespace-nowrap">
                                         <span
-                                            class="text-sm font-bold text-gray-700 tracking-wider">{{ $ingredient['name'] }}</span>
+                                            class="text-xs sm:text-sm font-bold text-gray-700 tracking-wider">{{ $ingredient['name'] }}</span>
                                     </td>
 
                                     {{-- 保管場所 --}}
-                                    <td class="px-6 py-4 whitespace-nowrap">
+                                    <td class="px-4 py-4 whitespace-nowrap hidden md:table-cell">
                                         @if ($ingredient['storage_type'] === 0)
                                             <span
                                                 class="inline-flex items-center rounded-md bg-blue-50/80 border border-blue-100 px-3 py-1 text-[10px] font-bold text-blue-500 tracking-widest">冷蔵</span>
@@ -190,20 +192,20 @@
                                     </td>
 
                                     {{-- 数量 --}}
-                                    <td class="px-6 py-4 text-center whitespace-nowrap">
+                                    <td class="px-4 py-4 text-center whitespace-nowrap hidden sm:table-cell">
                                         <span class="text-sm font-bold text-gray-600">{{ $ingredient['quantity'] }}</span>
                                     </td>
 
                                     {{-- 賞味期限 --}}
-                                    <td class="px-6 py-4 text-center whitespace-nowrap">
+                                    <td class="px-4 py-4 text-center whitespace-nowrap">
                                         <span
                                             class="text-xs font-mono font-bold {{ $ingredient['status_color'] === 'red' ? 'text-red-400' : 'text-gray-500' }}">
-                                            {{ $ingredient['expiration_date'] ? \Carbon\Carbon::parse($ingredient['expiration_date'])->format('Y/m/d') : '-' }}
+                                            {{ $ingredient['expiration_date'] ? \Carbon\Carbon::parse($ingredient['expiration_date'])->format('m/d') : '-' }}
                                         </span>
                                     </td>
 
                                     {{-- メモ --}}
-                                    <td class="px-6 py-4">
+                                    <td class="px-4 py-4 hidden lg:table-cell">
                                         <p
                                             class="max-w-[150px] text-[11px] font-medium text-gray-400 leading-relaxed truncate group-hover:whitespace-normal group-hover:bg-white transition-all">
                                             {{ $ingredient['memo'] ?: 'ー' }}
@@ -211,11 +213,11 @@
                                     </td>
 
                                     {{-- 操作ボタン --}}
-                                    <td class="px-6 py-4 text-center whitespace-nowrap">
+                                    <td class="px-4 py-4 text-center whitespace-nowrap">
                                         <div
-                                            class="flex items-center justify-center space-x-4 opacity-70 group-hover:opacity-100 transition-opacity">
+                                            class="flex items-center justify-center space-x-2 sm:space-x-4 opacity-100 sm:opacity-70 group-hover:opacity-100 transition-opacity">
                                             <button onclick="location.href='/ingredient_update/{{ $ingredient['id'] }}'"
-                                                class="w-8 h-8 rounded-full bg-gray-50 flex items-center justify-center text-gray-400 hover:text-[#C1A173] hover:bg-white shadow-sm transition-all"
+                                                class="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-gray-50 flex items-center justify-center text-gray-400 hover:text-[#C1A173] hover:bg-white shadow-sm transition-all"
                                                 title="編集">
                                                 <i class="bi bi-pencil-fill text-xs"></i>
                                             </button>
@@ -223,7 +225,7 @@
                                             {{--  共通の削除モーダルを呼び出す！ --}}
                                             <button
                                                 onclick="openSharedDeleteModal('/ingredient_delete/{{ $ingredient['id'] }}', '{{ $ingredient['name'] }}')"
-                                                class="w-8 h-8 rounded-full bg-red-50 flex items-center justify-center text-red-300 hover:text-white hover:bg-red-400 shadow-sm transition-all"
+                                                class="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-red-50 flex items-center justify-center text-red-300 hover:text-white hover:bg-red-400 shadow-sm transition-all"
                                                 title="削除">
                                                 <i class="bi bi-trash3-fill text-xs"></i>
                                             </button>

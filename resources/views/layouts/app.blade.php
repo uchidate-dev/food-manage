@@ -26,8 +26,8 @@
 
 <body class="bg-[#FAF9F6] text-[#4A4A4A]">
     <div id="app">
-        <nav class="bg-white border-b border-[#EAE4DD] py-3 shadow-sm">
-            <div class="container mx-auto px-4 md:px-8 flex justify-between items-center">
+        <nav class="bg-white border-b border-[#EAE4DD] shadow-sm relative z-50">
+            <div class="container mx-auto px-4 py-3 md:px-8 flex justify-between items-center">
 
                 {{-- ロゴ --}}
                 <a class="text-xl md:text-2xl font-logo font-semibold tracking-tight text-[#8C7A6B] hover:opacity-70 transition-opacity"
@@ -46,6 +46,7 @@
                             <a href="{{ url('/recipe_list') }}"
                                 class="hover:text-[#C1A173] transition-colors border-b-2 border-transparent hover:border-[#C1A173] pb-1">レシピ帳</a>
                         </div>
+
                         {{-- ログアウト --}}
                         <a href="{{ route('logout') }}"
                             class="text-[11px] font-bold tracking-widest text-[#8C7A6B] border border-[#EAE4DD] px-3 py-1.5 rounded hover:bg-[#FAF9F6] transition-all"
@@ -55,6 +56,11 @@
                         <form id="logout-form" action="{{ route('logout') }}" method="POST" class="hidden">
                             @csrf
                         </form>
+
+                        <button id="mobile-menu-btn"
+                            class="sm:hidden text-[#8C7A6B] text-2xl focus:outline-none hover:text-[#C1A173] transition-colors">
+                            <i class="bi bi-list"></i>
+                        </button>
                     @endauth
 
                     @guest
@@ -64,6 +70,25 @@
                     @endguest
                 </div>
             </div>
+
+            @auth
+                <div id="mobile-menu"
+                    class="hidden sm:hidden border-t border-[#EAE4DD] bg-white absolute w-full shadow-lg transition-all">
+                    <div class="flex flex-col px-6 py-4 space-y-4 text-[13px] font-bold text-[#8C7A6B]">
+                        <a href="{{ url('/home') }}" class="hover:text-[#C1A173] flex items-center transition-colors">
+                            <i class="bi bi-house-door-fill mr-3 text-lg text-[#C1A173]"></i>ホーム
+                        </a>
+                        <a href="{{ url('/ingredient_list') }}"
+                            class="hover:text-[#C1A173] flex items-center transition-colors">
+                            <i class="bi bi-basket-fill mr-3 text-lg text-[#C1A173]"></i>食材管理
+                        </a>
+                        <a href="{{ url('/recipe_list') }}"
+                            class="hover:text-[#C1A173] flex items-center transition-colors">
+                            <i class="bi bi-journal-text mr-3 text-lg text-[#C1A173]"></i>レシピ帳
+                        </a>
+
+                    </div>
+                @endauth
         </nav>
 
         {{-- --- メインコンテンツ --- --}}
