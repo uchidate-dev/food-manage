@@ -86,9 +86,9 @@
                             class="hover:text-[#C1A173] flex items-center transition-colors">
                             <i class="bi bi-journal-text mr-3 text-lg text-[#C1A173]"></i>レシピ帳
                         </a>
-
                     </div>
-                @endauth
+                </div>
+            @endauth
         </nav>
 
         {{-- --- メインコンテンツ --- --}}
@@ -99,7 +99,7 @@
         @yield('js')
     </div>
 
-    <script src="{{ asset('js/shared_components.js') }}"></script>
+    <script src="{{ asset('js/shared_components.js?v=' . time()) }}"></script>
 </body>
 
 </html>
