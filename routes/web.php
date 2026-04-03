@@ -11,8 +11,10 @@ use App\Http\Controllers\RecipeController;
 //  認証・未ログインエリア
 // ==========================================
 
-// Laravel welcome画面をログイン画面へリダイレクト
-Route::redirect('/', '/login');
+// ウェルカム画面
+Route::get('/', function () {
+    return view('welcome');
+});
 
 // デフォルトの認証機能（ログイン等）
 Auth::routes();
@@ -36,13 +38,6 @@ Route::middleware('auth')->group(function () {
     //  ホーム画面（Dashboard）
     Route::get('/home', [HomeController::class, 'index'])->name('home');
 
-    //  ユーザー管理
-    // Route::controller(UserRegisterController::class)->group(function () {
-    // Route::get('/user_list', 'list')->name('user_list');
-    // Route::get('/user_edit/{id}', 'edit');
-    // Route::put('/user_update/{id}', 'update')->name('user_update');
-    // });
-
     //  食材管理（Kitchen Stock）
     Route::controller(IngredientController::class)->group(function () {
         Route::get('/ingredient_list', 'index')->name('ingredient.list');
@@ -61,7 +56,7 @@ Route::middleware('auth')->group(function () {
         // 編集・更新・削除
         Route::get('/recipe_update/{id}', 'edit')->name('recipe.edit');
         Route::patch('/recipe_update/{id}', 'update')->name('recipe.update');
-        Route::delete('/recipe_delete/{id}', 'destroy')->name('recipe.destroy'); // 重複していた削除もこれ1つに！
+        Route::delete('/recipe_delete/{id}', 'destroy')->name('recipe.destroy');
 
         // お気に入り機能（Ajax）
         Route::post('/recipe/{recipe}/favorite', 'toggleFavorite')->name('recipes.favorite.toggle');
