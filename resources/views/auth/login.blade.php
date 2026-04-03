@@ -1,21 +1,19 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="bg-[#FAF9F6] min-h-[85vh] flex flex-col items-center justify-center px-4 sm:px-6 relative">
+    <div class="bg-[#FAF9F6] min-h-[85vh] flex flex-col items-center justify-center px-4 sm:px-6 py-8">
 
-        {{-- 画面左上に「LPに戻る」矢印ボタン --}}
-        <div class="absolute top-4 left-4 sm:top-8 sm:left-8">
-            <a href="/"
-                class="text-[11px] font-bold text-gray-400 hover:text-[#C1A173] tracking-widest transition-colors flex items-center">
-                <i class="bi bi-arrow-left mr-2"></i> LPに戻る
-            </a>
-        </div>
+        <div class="w-full max-w-md bg-white rounded-3xl shadow-sm border border-[#EAE4DD] p-8 sm:p-12">
 
-        <div class="w-full max-w-md bg-white rounded-3xl shadow-sm border border-[#EAE4DD] px-8 py-12 sm:px-12">
+            <div class="mb-4 -mt-2 sm:-mt-4">
+                <a href="/"
+                    class="inline-flex items-center text-[11px] font-bold text-gray-400 hover:text-[#C1A173] tracking-widest transition-colors">
+                    <i class="bi bi-arrow-left mr-1"></i> トップページに戻る
+                </a>
+            </div>
 
             {{--  アプリロゴ ＆ メッセージ --}}
-            <div class="text-center mb-10">
-                {{-- 中央の大きなロゴもクリックできるように <a> タグで囲みました！ --}}
+            <div class="text-center mb-10 mt-2">
                 <a href="/" class="inline-block hover:opacity-70 transition-opacity">
                     <h1 class="text-3xl md:text-4xl font-logo font-bold text-[#8C7A6B] tracking-tight mb-2">
                         My Kitchen <span class="text-[#C1A173]">Stock</span>
