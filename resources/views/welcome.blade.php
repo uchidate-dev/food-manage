@@ -29,18 +29,19 @@
 </head>
 
 <body
-    class="bg-[#FAF9F6] text-[#4A4A4A] h-screen flex flex-col lg:flex-row overflow-hidden selection:bg-[#C1A173] selection:text-white">
+    class="bg-[#FAF9F6] text-[#4A4A4A] min-h-screen flex flex-col lg:flex-row selection:bg-[#C1A173] selection:text-white">
 
     {{-- 左エリア --}}
-    <div class="w-full lg:w-5/12 flex flex-col px-8 md:px-12 lg:px-16 py-10 z-10 bg-[#FAF9F6] h-screen">
+    <div
+        class="w-full lg:w-5/12 flex flex-col px-8 md:px-12 lg:px-16 py-8 lg:py-10 z-10 bg-[#FAF9F6] min-h-[60vh] lg:h-screen order-2 lg:order-1">
 
         {{-- ナビゲーション --}}
-        <nav class="flex justify-between items-center w-full mb-auto">
+        <nav class="flex justify-between items-center w-full mb-10 lg:mb-auto">
             <a href="/"
                 class="text-xl font-logo font-semibold tracking-tight text-[#8C7A6B] hover:opacity-70 transition-opacity">
                 My Kitchen <span class="text-[#C1A173]">Stock</span>
             </a>
-            <div class="flex gap-4 items-center">
+            <div class="hidden md:flex gap-4 items-center">
                 <a href="{{ route('login') }}"
                     class="text-[11px] font-bold text-[#8C7A6B] hover:text-[#C1A173] transition-colors tracking-widest">
                     ログイン
@@ -88,11 +89,11 @@
 
         </div>
 
-        <div class="mt-auto"></div>
+        <div class="mt-auto hidden lg:block"></div>
     </div>
 
     {{-- 右エリア（画像） --}}
-    <div class="w-full lg:w-7/12 h-[50vh] lg:h-screen relative overflow-hidden">
+    <div class="w-full lg:w-7/12 h-[40vh] lg:h-screen relative overflow-hidden order-1 lg:order-2">
 
         {{-- メイン画像：美味しそうな色合いをそのまま表示！ --}}
         <img src="{{ asset('images/hero-bg.jpg') }}" alt="子どものためのやさしいお弁当" class="w-full h-full object-cover">
