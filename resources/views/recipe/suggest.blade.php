@@ -64,7 +64,7 @@
                                     <i class="bi bi-basket mr-2 text-[#C1A173]"></i> 使う材料
                                 </h3>
                                 <ul class="text-sm text-gray-700 font-medium space-y-2">
-                                    {{-- 🌟 配列の形でデータを取り出すように変更！ --}}
+                                    {{--  配列の形でデータを取り出すように変更！ --}}
                                     @if (isset($dummyAiRecipe['ingredients']) && is_array($dummyAiRecipe['ingredients']))
                                         @foreach ($dummyAiRecipe['ingredients'] as $ing)
                                             <li

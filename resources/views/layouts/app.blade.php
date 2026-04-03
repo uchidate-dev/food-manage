@@ -92,6 +92,24 @@
             @endauth
         </nav>
 
+        {{-- 共通トースト通知 --}}
+        @if (session('success'))
+            <div id="flash-message"
+                class="fixed bottom-10 md:bottom-auto md:top-24 left-1/2 transform -translate-x-1/2 z-[100] bg-[#C1A173] text-white px-8 py-3.5 rounded-full shadow-lg shadow-[#C1A173]/30 font-bold text-xs tracking-widest flex items-center transition-opacity duration-500 w-max max-w-[90vw]">
+                <i class="bi bi-check-circle-fill mr-2 text-lg"></i>
+                {{ session('success') }}
+            </div>
+            <script>
+                setTimeout(() => {
+                    const flash = document.getElementById('flash-message');
+                    if (flash) {
+                        flash.style.opacity = '0';
+                        setTimeout(() => flash.remove(), 500);
+                    }
+                }, 3000);
+            </script>
+        @endif
+
         {{-- --- メインコンテンツ --- --}}
         <main class="py-6">
             @yield('content')

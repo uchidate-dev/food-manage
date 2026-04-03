@@ -3,7 +3,7 @@
 @section('content')
     <div class="bg-[#FAF9F6] text-[#4A4A4A] min-h-screen py-8 relative overflow-hidden">
 
-        {{-- 背景装飾（他画面と統一✨） --}}
+        {{-- 背景装飾--}}
         <div
             class="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-gradient-to-br from-[#C1A173]/10 to-transparent rounded-full blur-3xl -z-10">
         </div>
@@ -100,7 +100,7 @@
                                 <div class="flex items-center gap-6">
                                     <span
                                         class="text-sm font-bold text-red-400 font-mono">{{ \Carbon\Carbon::parse($item->expiration_date)->format('m/d') }}</span>
-                                    {{-- ★ 共通の削除モーダルを呼び出す！ --}}
+                                    {{-- ★ 共通の削除モーダルを呼び出す --}}
                                     <button type="button"
                                         onclick="openSharedDeleteModal('/ingredient_delete/{{ $item->id }}', '{{ $item->name }}')"
                                         class="text-gray-200 hover:text-red-400 transition-all">
@@ -149,7 +149,7 @@
                                 <div class="flex items-center gap-6">
                                     <span class="text-sm font-bold text-gray-500 font-mono">期限:
                                         {{ \Carbon\Carbon::parse($item->expiration_date)->format('m/d') }}</span>
-                                    {{-- ★ 共通の削除モーダルを呼び出す！ --}}
+                                    {{-- ★ 共通の削除モーダルを呼び出す --}}
                                     <button type="button"
                                         onclick="openSharedDeleteModal('/ingredient_delete/{{ $item->id }}', '{{ $item->name }}')"
                                         class="text-gray-200 hover:text-[#C1A173] transition-all text-xl">

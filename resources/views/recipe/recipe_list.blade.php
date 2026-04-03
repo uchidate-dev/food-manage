@@ -2,15 +2,6 @@
 
 @section('content')
 
-    {{-- 🪄 大成功のポップアップ通知（トースト）本体だけ残す！ --}}
-    @if (session('success'))
-        <div id="flash-message"
-            class="fixed top-24 left-1/2 transform -translate-x-1/2 z-50 bg-[#C1A173] text-white px-8 py-3.5 rounded-full shadow-lg shadow-[#C1A173]/30 font-bold text-xs tracking-widest flex items-center transition-opacity duration-500">
-            <i class="bi bi-check-circle-fill mr-2 text-lg"></i>
-            {{ session('success') }}
-        </div>
-    @endif
-
     @php
         // ユーザーごとのお気に入りID一覧（N+1回避）
         $favoriteIds = [];
@@ -231,7 +222,7 @@
 @endsection
 
 @section('js')
-    {{-- ★ここで外部ファイルをキレイにまとめて読み --}}
+    {{-- 外部ファイルをキレイにまとめて読み --}}
     <script src="{{ asset('js/recipe_favorite.js') }}"></script>
     <script src="{{ asset('js/flash_message.js') }}"></script>
     <script src="{{ asset('js/shared_components.js') }}"></script>
