@@ -45,7 +45,7 @@
         <div
             class="w-full lg:w-5/12 flex flex-col px-8 md:px-12 lg:px-16 py-10 z-10 bg-[#FAF9F6] min-h-[50vh] lg:h-screen order-2 lg:order-1">
 
-            {{--  PC用ヘッダー（ロゴ）：スマホの時は隠す --}}
+            {{-- 💻 PC用ヘッダー（ロゴ）：スマホの時は隠す --}}
             <nav class="hidden lg:flex justify-between items-center w-full mb-auto">
                 <a href="/"
                     class="text-xl font-logo font-semibold tracking-tight text-[#8C7A6B] hover:opacity-70 transition-opacity">
@@ -65,7 +65,7 @@
                 <h1
                     class="text-3xl lg:text-4xl xl:text-5xl font-light text-[#4A3F35] leading-[1.6] tracking-widest mb-8">
                     毎日の献立に、<br>
-                    ほんの少しの<span class="font-medium text-[#8C7A6B]">余白</span>を。
+                    ほんの少しの<span class="whitespace-nowrap"><span class="font-medium text-[#8C7A6B]">余白</span>を。</span>
                 </h1>
 
                 <p class="text-xs text-gray-500 leading-[2.2] tracking-widest mb-12">
