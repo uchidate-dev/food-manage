@@ -178,7 +178,7 @@
                                 </div>
                             </div>
 
-                            {{-- 🪄 鉄壁のメモ欄（空じゃない時だけ表示） --}}
+                            {{--  メモ欄（空じゃない時だけ表示） --}}
                             @if (!empty($ingredient['memo']))
                                 <div class="mt-3 pt-3 border-t border-dashed border-gray-200">
                                     <p class="text-[10px] text-gray-400 leading-relaxed font-medium line-clamp-2">
