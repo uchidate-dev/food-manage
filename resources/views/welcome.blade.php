@@ -28,75 +28,74 @@
     </style>
 </head>
 
-<body
-    class="bg-[#FAF9F6] text-[#4A4A4A] min-h-screen flex flex-col lg:flex-row selection:bg-[#C1A173] selection:text-white">
+<body class="bg-[#FAF9F6] text-[#4A4A4A] min-h-screen flex flex-col selection:bg-[#C1A173] selection:text-white">
 
-    {{-- 左エリア --}}
-    <div
-        class="w-full lg:w-5/12 flex flex-col px-8 md:px-12 lg:px-16 py-8 lg:py-10 z-10 bg-[#FAF9F6] min-h-[60vh] lg:h-screen order-2 lg:order-1">
-
-        {{-- ナビゲーション --}}
-        <nav class="flex justify-between items-center w-full mb-10 lg:mb-auto">
-            <a href="/"
-                class="text-xl font-logo font-semibold tracking-tight text-[#8C7A6B] hover:opacity-70 transition-opacity">
-                My Kitchen <span class="text-[#C1A173]">Stock</span>
-            </a>
-            <div class="hidden md:flex gap-4 items-center">
-                <a href="{{ route('login') }}"
-                    class="text-[11px] font-bold text-[#8C7A6B] hover:text-[#C1A173] transition-colors tracking-widest">
-                    ログイン
-                </a>
-                <a href="{{ route('user_register') }}"
-                    class="text-[10px] font-bold text-white bg-[#8C7A6B] px-4 py-2 rounded-sm hover:bg-[#7A6A5C] transition-colors tracking-widest">
-                    はじめる
-                </a>
-            </div>
-        </nav>
-
-        {{-- メインコピー --}}
-        <div class="my-auto pt-8">
-
-            <p class="text-[#C1A173] text-[10px] font-bold tracking-[0.3em] uppercase mb-8">
-                <span class="inline-block border-b border-[#C1A173] pb-1">
-                    AI Recipe & Stock
-                </span>
-            </p>
-
-            <h1 class="text-3xl lg:text-4xl xl:text-5xl font-light text-[#4A3F35] leading-[1.6] tracking-widest mb-8">
-                毎日の献立に、<br>
-                ほんの少しの<span class="font-medium text-[#8C7A6B]">余白</span>を。
-            </h1>
-
-            {{-- システムの事実に即したエモ推しのサブコピーに変更！ --}}
-            <p class="text-xs text-gray-500 leading-[2.2] tracking-widest mb-12">
-                冷蔵庫の前でフリーズする朝は、もう終わりにしよう。<br>
-                今ある食材を選ぶだけで、AIが最適な献立をサクッと提案。<br>
-                忙しいあなたの「考える時間」をゼロにする、AIレシピ＆食材管理アプリ。
-            </p>
-
-            {{-- ボタン --}}
-            <div class="flex flex-col xl:flex-row gap-4 w-full">
-                <a href="{{ route('user_register') }}"
-                    class="text-center bg-[#8C7A6B] text-white px-6 py-4 text-xs font-bold tracking-[0.2em] hover:bg-[#7A6A5C] transition-colors">
-                    無料で使ってみる
-                </a>
-
-                <a href="{{ route('login') }}"
-                    class="text-center bg-transparent border border-[#EAE4DD] text-[#8C7A6B] px-6 py-4 text-xs font-bold tracking-[0.2em] hover:bg-white transition-colors">
-                    デモ画面を見る
-                </a>
-            </div>
-
-        </div>
-
-        <div class="mt-auto hidden lg:block"></div>
+    {{-- スマホ用ヘッダー（ロゴ） --}}
+    <div class="lg:hidden w-full px-8 py-6 bg-[#FAF9F6] flex justify-center z-20 border-b border-[#EAE4DD]/50">
+        <a href="/"
+            class="text-xl font-logo font-semibold tracking-tight text-[#8C7A6B] hover:opacity-70 transition-opacity">
+            My Kitchen <span class="text-[#C1A173]">Stock</span>
+        </a>
     </div>
 
-    {{-- 右エリア（画像） --}}
-    <div class="w-full lg:w-7/12 h-[40vh] lg:h-screen relative overflow-hidden order-1 lg:order-2">
+    {{-- メインコンテンツ（PC時は左右分割、スマホ時は上下配置） --}}
+    <div class="flex flex-col lg:flex-row flex-1">
 
-        {{-- メイン画像：美味しそうな色合いをそのまま表示！ --}}
-        <img src="{{ asset('images/hero-bg.jpg') }}" alt="子どものためのやさしいお弁当" class="w-full h-full object-cover">
+        {{-- 左エリア --}}
+        <div
+            class="w-full lg:w-5/12 flex flex-col px-8 md:px-12 lg:px-16 py-10 z-10 bg-[#FAF9F6] min-h-[50vh] lg:h-screen order-2 lg:order-1">
+
+            {{--  PC用ヘッダー（ロゴ）：スマホの時は隠す --}}
+            <nav class="hidden lg:flex justify-between items-center w-full mb-auto">
+                <a href="/"
+                    class="text-xl font-logo font-semibold tracking-tight text-[#8C7A6B] hover:opacity-70 transition-opacity">
+                    My Kitchen <span class="text-[#C1A173]">Stock</span>
+                </a>
+            </nav>
+
+            {{-- メインコピー --}}
+            <div class="my-auto lg:pt-8 mt-4 lg:mt-0">
+
+                <p class="text-[#C1A173] text-[10px] font-bold tracking-[0.3em] uppercase mb-8">
+                    <span class="inline-block border-b border-[#C1A173] pb-1">
+                        AI Recipe & Stock
+                    </span>
+                </p>
+
+                <h1
+                    class="text-3xl lg:text-4xl xl:text-5xl font-light text-[#4A3F35] leading-[1.6] tracking-widest mb-8">
+                    毎日の献立に、<br>
+                    ほんの少しの<span class="font-medium text-[#8C7A6B]">余白</span>を。
+                </h1>
+
+                <p class="text-xs text-gray-500 leading-[2.2] tracking-widest mb-12">
+                    冷蔵庫の前でフリーズする朝は、もう終わりにしよう。<br>
+                    今ある食材を選ぶだけで、AIが最適な献立をサクッと提案。<br>
+                    忙しいあなたの「考える時間」をゼロにする、AIレシピ＆食材管理アプリ。
+                </p>
+
+                {{-- ボタン --}}
+                <div class="flex flex-col xl:flex-row gap-4 w-full">
+                    <a href="{{ route('user_register') }}"
+                        class="text-center bg-[#8C7A6B] text-white px-6 py-4 text-xs font-bold tracking-[0.2em] hover:bg-[#7A6A5C] transition-colors">
+                        無料で使ってみる
+                    </a>
+
+                    <a href="{{ route('login') }}"
+                        class="text-center bg-transparent border border-[#EAE4DD] text-[#8C7A6B] px-6 py-4 text-xs font-bold tracking-[0.2em] hover:bg-white transition-colors">
+                        デモ画面を見る
+                    </a>
+                </div>
+
+            </div>
+
+            <div class="mt-auto hidden lg:block"></div>
+        </div>
+
+        {{-- 右エリア（画像） スマホ時はヘッダーのすぐ下（順序1番目）に来る --}}
+        <div class="w-full lg:w-7/12 h-[35vh] lg:h-screen relative overflow-hidden order-1 lg:order-2">
+            <img src="{{ asset('images/hero-bg.jpg') }}" alt="子どものためのやさしいお弁当" class="w-full h-full object-cover">
+        </div>
 
     </div>
 

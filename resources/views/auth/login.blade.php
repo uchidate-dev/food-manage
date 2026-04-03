@@ -1,15 +1,26 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="bg-[#FAF9F6] min-h-[85vh] flex flex-col items-center justify-center px-4 sm:px-6">
+    <div class="bg-[#FAF9F6] min-h-[85vh] flex flex-col items-center justify-center px-4 sm:px-6 relative">
+
+        {{-- 画面左上に「LPに戻る」矢印ボタン --}}
+        <div class="absolute top-4 left-4 sm:top-8 sm:left-8">
+            <a href="/"
+                class="text-[11px] font-bold text-gray-400 hover:text-[#C1A173] tracking-widest transition-colors flex items-center">
+                <i class="bi bi-arrow-left mr-2"></i> LPに戻る
+            </a>
+        </div>
 
         <div class="w-full max-w-md bg-white rounded-3xl shadow-sm border border-[#EAE4DD] px-8 py-12 sm:px-12">
 
             {{--  アプリロゴ ＆ メッセージ --}}
             <div class="text-center mb-10">
-                <h1 class="text-3xl md:text-4xl font-logo font-bold text-[#8C7A6B] tracking-tight mb-2">
-                    My Kitchen <span class="text-[#C1A173]">Stock</span>
-                </h1>
+                {{-- 中央の大きなロゴもクリックできるように <a> タグで囲みました！ --}}
+                <a href="/" class="inline-block hover:opacity-70 transition-opacity">
+                    <h1 class="text-3xl md:text-4xl font-logo font-bold text-[#8C7A6B] tracking-tight mb-2">
+                        My Kitchen <span class="text-[#C1A173]">Stock</span>
+                    </h1>
+                </a>
                 <p class="text-[11px] font-bold tracking-[0.2em] text-[#C1A173] uppercase">
                     Welcome back
                 </p>
